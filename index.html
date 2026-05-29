@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OWRNG Web</title>
 
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+
+    input {
+      width: 90%;
+      max-width: 500px;
+      padding: 15px;
+      font-size: 18px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 22px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>OWRNG Web</h1>
+
+  <p>TSVを入力</p>
+  <input id="tsv" placeholder="176">
+
+  <p>128bitを入力</p>
+  <input id="bits" placeholder="010101...">
+
+  <br>
+
+  <button onclick="calculateSeed()">
+    seed特定
+  </button>
+
+  <div id="result">
+    結果がここに表示されます
+  </div>
+
+  <script>
+    function calculateSeed() {
+
+      const tsv = document.getElementById("tsv").value;
+      const bits = document.getElementById("bits").value;
+
+      document.getElementById("result").innerHTML =
+        "TSV: " + tsv + "<br>" +
+        "入力bit数: " + bits.length + "<br><br>" +
+        "seed解析機能はこれから実装";
+    }
+  </script>
+
+</body>
+</html>
