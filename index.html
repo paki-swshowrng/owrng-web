@@ -15,30 +15,48 @@
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 40px;
     }
 
     input {
       width: 90%;
-      max-width: 500px;
+      max-width: 700px;
       padding: 15px;
-      font-size: 18px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: none;
       margin-top: 10px;
+    }
+
+    .bitButtons {
+      margin-top: 20px;
+    }
+
+    .bitButtons button {
+      width: 120px;
+      height: 120px;
+      font-size: 50px;
+      margin: 10px;
+      border-radius: 20px;
+      border: none;
+    }
+
+    .actionButton {
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 24px;
       border-radius: 10px;
       border: none;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 15px 30px;
-      font-size: 20px;
-      border: none;
-      border-radius: 10px;
+    #counter {
+      margin-top: 15px;
+      font-size: 28px;
     }
 
     #result {
       margin-top: 30px;
-      font-size: 22px;
+      font-size: 24px;
     }
   </style>
 </head>
@@ -47,15 +65,28 @@
 
   <h1>OWRNG Web</h1>
 
-  <p>TSVを入力</p>
+  <p>TSV</p>
   <input id="tsv" placeholder="176">
 
-  <p>128bitを入力</p>
-  <input id="bits" placeholder="010101...">
+  <p>128bit</p>
+  <input id="bits" readonly>
+
+  <div id="counter">
+    0 / 128
+  </div>
+
+  <div class="bitButtons">
+    <button onclick="addBit('0')">0</button>
+    <button onclick="addBit('1')">1</button>
+  </div>
+
+  <button class="actionButton" onclick="removeBit()">
+    1文字戻す
+  </button>
 
   <br>
 
-  <button onclick="calculateSeed()">
+  <button class="actionButton" onclick="calculateSeed()">
     seed特定
   </button>
 
@@ -64,6 +95,35 @@
   </div>
 
   <script>
+
+    function updateCounter() {
+      const bits = document.getElementById("bits").value;
+      document.getElementById("counter").innerHTML =
+        bits.length + " / 128";
+    }
+
+    function addBit(bit) {
+
+      const input = document.getElementById("bits");
+
+      if (input.value.length >= 128) {
+        return;
+      }
+
+      input.value += bit;
+
+      updateCounter();
+    }
+
+    function removeBit() {
+
+      const input = document.getElementById("bits");
+
+      input.value = input.value.slice(0, -1);
+
+      updateCounter();
+    }
+
     function calculateSeed() {
 
       const tsv = document.getElementById("tsv").value;
@@ -74,6 +134,7 @@
         "入力bit数: " + bits.length + "<br><br>" +
         "seed解析機能はこれから実装";
     }
+
   </script>
 
 </body>
