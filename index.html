@@ -1,158 +1,297 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OWRNG Web</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OWRNG Web</title>
 
-  <style>
-    body {
-      background: #111;
-      color: white;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
+<style>
 
-    h1 {
-      font-size: 40px;
-    }
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:sans-serif;
+    text-align:center;
+}
 
-    input {
-      width: 90%;
-      max-width: 700px;
-      padding: 15px;
-      font-size: 20px;
-      border-radius: 10px;
-      border: none;
-      margin-top: 10px;
-    }
+header{
+    background:#222;
+    padding:15px;
+    font-size:28px;
+    display:flex;
+    align-items:center;
+}
 
-    .bitButtons {
-      margin-top: 20px;
-    }
+#menuButton{
+    font-size:30px;
+    background:none;
+    border:none;
+    color:white;
+    margin-right:15px;
+}
 
-    .bitButtons button {
-      width: 120px;
-      height: 120px;
-      font-size: 50px;
-      margin: 10px;
-      border-radius: 20px;
-      border: none;
-    }
+#menu{
+    position:fixed;
+    top:0;
+    left:-250px;
+    width:250px;
+    height:100%;
+    background:#222;
+    transition:0.3s;
+    padding-top:70px;
+    z-index:1000;
+}
 
-    .actionButton {
-      margin-top: 20px;
-      padding: 15px 30px;
-      font-size: 24px;
-      border-radius: 10px;
-      border: none;
-    }
+#menu button{
+    width:100%;
+    padding:20px;
+    font-size:22px;
+    border:none;
+    background:none;
+    color:white;
+    text-align:left;
+}
 
-    #counter {
-      margin-top: 15px;
-      font-size: 28px;
-    }
+#menu button:hover{
+    background:#333;
+}
 
-    #result {
-      margin-top: 30px;
-      font-size: 24px;
-    }
-  </style>
+.page{
+    display:none;
+    padding:20px;
+}
+
+.active{
+    display:block;
+}
+
+input{
+    width:90%;
+    max-width:700px;
+    padding:15px;
+    font-size:20px;
+    border:none;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.bitButtons{
+    margin-top:20px;
+}
+
+.bitButtons button{
+    width:120px;
+    height:120px;
+    font-size:50px;
+    margin:10px;
+    border:none;
+    border-radius:20px;
+}
+
+.actionButton{
+    margin-top:20px;
+    padding:15px 30px;
+    font-size:24px;
+    border:none;
+    border-radius:10px;
+}
+
+#counter{
+    margin-top:15px;
+    font-size:28px;
+}
+
+#result,
+#tsvResult{
+    margin-top:30px;
+    font-size:24px;
+}
+
+</style>
 </head>
 
 <body>
 
-  <h1>OWRNG Web</h1>
+<header>
+<button id="menuButton" onclick="toggleMenu()">☰</button>
+OWRNG Web
+</header>
 
-  <p>TID</p>
-  <input id="tid" placeholder="12345">
+<div id="menu">
 
-  <p>SID</p>
-  <input id="sid" placeholder="54321">
+<button onclick="showPage('seedPage')">
+Seed計算
+</button>
 
-  <p>128bit</p>
-  <input id="bits" readonly>
+<button onclick="showPage('tsvPage')">
+TSV計算
+</button>
 
-  <div id="counter">
-    0 / 128
-  </div>
+</div>
 
-  <div class="bitButtons">
-    <button onclick="addBit('0')">0</button>
-    <button onclick="addBit('1')">1</button>
-  </div>
+<div id="seedPage" class="page active">
 
-  <button class="actionButton" onclick="removeBit()">
-    1文字戻す
-  </button>
+<h2>Seed計算</h2>
 
-  <br>
+<p>128bit</p>
 
-  <button class="actionButton" onclick="calculateSeed()">
-    TSV計算
-  </button>
+<input id="bits" readonly>
 
-  <div id="result">
-    結果がここに表示されます
-  </div>
+<div id="counter">
+0 / 128
+</div>
 
-  <script>
+<div class="bitButtons">
 
-    function updateCounter() {
-      const bits = document.getElementById("bits").value;
+<button onclick="addBit('0')">
+0
+</button>
 
-      document.getElementById("counter").innerHTML =
-        bits.length + " / 128";
+<button onclick="addBit('1')">
+1
+</button>
+
+</div>
+
+<button class="actionButton" onclick="removeBit()">
+1文字戻す
+</button>
+
+<br>
+
+<button class="actionButton" onclick="calculateSeed()">
+Seed特定
+</button>
+
+<div id="result">
+結果がここに表示されます
+</div>
+
+</div>
+
+<div id="tsvPage" class="page">
+
+<h2>TSV計算</h2>
+
+<p>TID</p>
+<input id="tid">
+
+<p>SID</p>
+<input id="sid">
+
+<br>
+
+<button class="actionButton" onclick="calculateTSV()">
+TSV計算
+</button>
+
+<div id="tsvResult">
+結果がここに表示されます
+</div>
+
+</div>
+
+<script>
+
+function toggleMenu(){
+
+    const menu=document.getElementById("menu");
+
+    if(menu.style.left==="0px"){
+        menu.style.left="-250px";
     }
+    else{
+        menu.style.left="0px";
+    }
+}
 
-    function addBit(bit) {
+function showPage(pageId){
 
-      const input = document.getElementById("bits");
+    document.getElementById("seedPage")
+    .classList.remove("active");
 
-      if (input.value.length >= 128) {
+    document.getElementById("tsvPage")
+    .classList.remove("active");
+
+    document.getElementById(pageId)
+    .classList.add("active");
+
+    document.getElementById("menu")
+    .style.left="-250px";
+}
+
+function updateCounter(){
+
+    const bits=
+    document.getElementById("bits").value;
+
+    document.getElementById("counter").innerHTML=
+    bits.length+" / 128";
+}
+
+function addBit(bit){
+
+    const input=
+    document.getElementById("bits");
+
+    if(input.value.length>=128){
         return;
-      }
-
-      input.value += bit;
-
-      updateCounter();
     }
 
-    function removeBit() {
+    input.value+=bit;
 
-      const input = document.getElementById("bits");
+    updateCounter();
+}
 
-      input.value = input.value.slice(0, -1);
+function removeBit(){
 
-      updateCounter();
-    }
+    const input=
+    document.getElementById("bits");
 
-    function calculateSeed() {
+    input.value=
+    input.value.slice(0,-1);
 
-      const tid = parseInt(document.getElementById("tid").value);
-      const sid = parseInt(document.getElementById("sid").value);
-      const bits = document.getElementById("bits").value;
+    updateCounter();
+}
 
-      if (isNaN(tid) || isNaN(sid)) {
+function calculateSeed(){
 
-        document.getElementById("result").innerHTML =
-          "TIDとSIDを入力してください";
+    const bits=
+    document.getElementById("bits").value;
+
+    document.getElementById("result").innerHTML=
+    "入力bit数 : "+bits.length+
+    "<br><br>"+
+    "Seed特定機能は開発中";
+}
+
+function calculateTSV(){
+
+    const tid=
+    parseInt(document.getElementById("tid").value);
+
+    const sid=
+    parseInt(document.getElementById("sid").value);
+
+    if(isNaN(tid)||isNaN(sid)){
+
+        document.getElementById("tsvResult")
+        .innerHTML=
+        "TIDとSIDを入力してください";
 
         return;
-      }
-
-      const tsv = ((tid ^ sid) >> 4);
-
-      document.getElementById("result").innerHTML =
-        "TSV: " + tsv +
-        "<br><br>" +
-        "入力bit数: " + bits.length +
-        "<br><br>" +
-        "初期state特定機能は開発中";
     }
 
-  </script>
+    const tsv=
+    ((tid^sid)>>4);
+
+    document.getElementById("tsvResult")
+    .innerHTML=
+    "TSV : "+tsv;
+}
+
+</script>
 
 </body>
 </html>
