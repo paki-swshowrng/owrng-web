@@ -65,8 +65,11 @@
 
   <h1>OWRNG Web</h1>
 
-  <p>TSV</p>
-  <input id="tsv" placeholder="176">
+  <p>TID</p>
+  <input id="tid" placeholder="12345">
+
+  <p>SID</p>
+  <input id="sid" placeholder="54321">
 
   <p>128bit</p>
   <input id="bits" readonly>
@@ -87,7 +90,7 @@
   <br>
 
   <button class="actionButton" onclick="calculateSeed()">
-    seed特定
+    TSV計算
   </button>
 
   <div id="result">
@@ -98,6 +101,7 @@
 
     function updateCounter() {
       const bits = document.getElementById("bits").value;
+
       document.getElementById("counter").innerHTML =
         bits.length + " / 128";
     }
@@ -126,13 +130,26 @@
 
     function calculateSeed() {
 
-      const tsv = document.getElementById("tsv").value;
+      const tid = parseInt(document.getElementById("tid").value);
+      const sid = parseInt(document.getElementById("sid").value);
       const bits = document.getElementById("bits").value;
 
+      if (isNaN(tid) || isNaN(sid)) {
+
+        document.getElementById("result").innerHTML =
+          "TIDとSIDを入力してください";
+
+        return;
+      }
+
+      const tsv = ((tid ^ sid) >> 4);
+
       document.getElementById("result").innerHTML =
-        "TSV: " + tsv + "<br>" +
-        "入力bit数: " + bits.length + "<br><br>" +
-        "seed解析機能はこれから実装";
+        "TSV: " + tsv +
+        "<br><br>" +
+        "入力bit数: " + bits.length +
+        "<br><br>" +
+        "初期state特定機能は開発中";
     }
 
   </script>
