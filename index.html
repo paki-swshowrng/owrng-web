@@ -189,7 +189,36 @@ bitsInput.addEventListener("input",()=>{
 });
 
 function calculateSeed(){
- result.innerHTML="入力bit数 : "+getBits().length+"<br><br>Seed特定機能は開発中";
+
+ let bits = getBits();
+
+ if(bits.length !== 128){
+
+   result.innerHTML =
+     "128bit入力してください";
+   return;
+ }
+
+ let rng = reverseBits(bits);
+
+ let s0 =
+   rng.s0
+   .toString(16)
+   .toUpperCase()
+   .padStart(16,"0");
+
+ let s1 =
+   rng.s1
+   .toString(16)
+   .toUpperCase()
+   .padStart(16,"0");
+
+ result.innerHTML =
+   "state[0]<br>" +
+   s0 +
+   "<br><br>" +
+   "state[1]<br>" +
+   s1;
 }
 
 function calculateTSV(){
