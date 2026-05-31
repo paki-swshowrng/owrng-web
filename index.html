@@ -168,7 +168,7 @@ function setBits(bits){
  for(let i=0;i<bits.length;i+=32){
    lines.push(bits.slice(i,i+32));
  }
- bitsInput.value=lines.join("\\n");
+ bitsInput.value=lines.join("\n");
  counter.textContent=bits.length+" / 128";
 }
 
