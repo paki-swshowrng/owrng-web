@@ -759,19 +759,28 @@ function calculateCurrent(){
    ).value
  );
 
- document.getElementById(
+let rng =
+ new Xoroshiro128p(
+   window.currentS0,
+   window.currentS1
+ );
+
+rng.advance(rangeMin);
+
+let test = "";
+
+for(let i=0;i<20;i++){
+
+ test +=
+ rng.getRandMax(2)
+ .toString();
+
+}
+
+document.getElementById(
   "currentResult"
 ).innerHTML =
-
-"S0 : " +
-window.currentS0
-.toString(16)
-.toUpperCase()
-+
-"<br>S1 : " +
-window.currentS1
-.toString(16)
-.toUpperCase();
+test;
 
 }
 </script>
