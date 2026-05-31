@@ -37,6 +37,17 @@ height:100%;
 background:#222;
 transition:.3s;
 padding-top:70px;
+z-index:10; 
+}
+ #overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.4);
+display:none;
+z-index:5;
 }
 #menu button{
 width:100%;
@@ -114,7 +125,10 @@ OWRNG Web
 <button onclick="showPage('seedPage')">Seed計算</button>
 <button onclick="showPage('tsvPage')">TSV計算</button>
 </div>
-
+<div id="overlay"
+onclick="closeMenu()">
+</div>
+ 
 <div id="seedPage" class="page active">
 <h2>Seed計算</h2>
 
@@ -147,15 +161,39 @@ OWRNG Web
 
 <script>
 function toggleMenu(){
- const m=document.getElementById("menu");
- m.style.left=(m.style.left==="0px")?"-250px":"0px";
+
+ const m =
+ document.getElementById("menu");
+
+ const o =
+ document.getElementById("overlay");
+
+ if(m.style.left==="0px"){
+
+   m.style.left="-250px";
+   o.style.display="none";
+
+ }else{
+
+   m.style.left="0px";
+   o.style.display="block";
+ }
 }
 
+ function closeMenu(){
+
+ document.getElementById("menu")
+ .style.left="-250px";
+
+ document.getElementById("overlay")
+ .style.display="none";
+}
+ 
 function showPage(id){
  seedPage.classList.remove("active");
  tsvPage.classList.remove("active");
  document.getElementById(id).classList.add("active");
- document.getElementById("menu").style.left="-250px";
+ closeMenu();
 }
 
 function getBits(){
