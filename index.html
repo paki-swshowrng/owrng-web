@@ -703,6 +703,14 @@ return rng;
  setBits("");
 function calculateCurrent(){
 
+ if(
+ typeof window.currentS0 === "undefined"
+){
+ currentResult.innerHTML =
+   "先にSeed特定してください";
+ return;
+}
+
  let text =
  document.getElementById(
    "currentBits"
@@ -726,15 +734,19 @@ function calculateCurrent(){
  );
 
  document.getElementById(
-   "currentResult"
- ).innerHTML =
- "入力長 : " +
- text.length +
- "<br>" +
- "検索範囲 : " +
- rangeMin +
- " ～ " +
- rangeMax;
+  "currentResult"
+).innerHTML =
+
+"S0 : " +
+window.currentS0
+.toString(16)
+.toUpperCase()
++
+"<br>S1 : " +
+window.currentS1
+.toString(16)
+.toUpperCase();
+
 }
 </script>
 
