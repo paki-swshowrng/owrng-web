@@ -414,7 +414,86 @@ mulMatrix(b){
  }
 
  return matrix;
-}}
+}inverse(){
+
+let matrix =
+new Matrix(
+this.mat.length,
+this.mat[0].length
+);
+
+let matrix2 =
+new Matrix(
+this.mat.length,
+this.mat[0].length
+);
+
+let length=this.mat.length;
+
+for(let i=0;i<length;i++){
+
+matrix.mat[i][i]=true;
+
+for(let j=0;j<length;j++){
+
+```
+ matrix2.mat[i][j]=
+   this.mat[i][j];
+```
+
+}
+}
+
+let num=0;
+let list=[];
+
+for(let k=0;k<length;k++){
+
+for(let l=num;l<length;l++){
+
+```
+ if(matrix2.mat[k][l]){
+
+   for(let m=0;m<length;m++){
+
+     if(
+       m!==l &&
+       matrix2.mat[k][m]
+     ){
+
+       matrix2.addColumns(l,m);
+       matrix.addColumns(l,m);
+     }
+   }
+
+   matrix2.swapColumns(l,num);
+   matrix.swapColumns(l,num);
+
+   list.push(k);
+
+   num++;
+
+   break;
+ }
+```
+
+}
+}
+
+for(
+let n=list.length-1;
+n>=0;
+n--
+){
+
+let i2=list[n];
+
+matrix.swapColumns(i2,n);
+}
+
+return matrix;
+}
+}
 
  
  function reverseBits(bitString){
