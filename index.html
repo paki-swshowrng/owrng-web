@@ -595,7 +595,9 @@ for(let m=0;m<128;m++){
 
 return lowbits;
 }
-
+const low = createLowBits();
+const lowInv = low.inverse();
+ 
  function reverseBits(bitString){
 return new Xoroshiro128p(0n,0n);
 }
