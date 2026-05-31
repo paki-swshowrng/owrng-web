@@ -573,9 +573,56 @@ return lowbits;
 }
 const low = createLowBits();
 const lowInv = low.inverse();
- function reverseBits(bitString){
-return new Xoroshiro128p(0n,0n);
+function reverseBits(bitString){
+
+let matrix =
+new Matrix(128,1);
+
+for(let i=0;i<64;i++){
+
+if(bitString[i] === "1"){
+
+ matrix.setElement(
+   i,
+   0,
+   true
+ );
+
 }
+
+if(bitString[i+64] === "1"){
+
+ matrix.setElement(
+   i+64,
+   0,
+   true
+ );
+
+}
+}
+
+let matrix2 =
+lowInv.mulMatrix(
+matrix
+);
+
+let rng =
+toXoroshiro128(
+matrix2
+);
+
+for(
+let j=0;
+j<bitString.length;
+j++
+){
+
+rng.getRand();
+}
+
+return rng;
+}
+
 
  setBits("");
 </script>
