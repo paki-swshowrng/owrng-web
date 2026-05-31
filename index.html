@@ -305,7 +305,83 @@ for(let step=0;step<n;step++){
 }
 }
 
-function reverseBits(bitString){
+class Matrix{
+
+constructor(row,col){
+
+this.mat =
+Array.from(
+{length:row},
+()=>Array(col).fill(false)
+);
+}
+
+getElement(r,c){
+return this.mat[r][c];
+}
+
+setElement(r,c,v){
+this.mat[r][c]=v;
+}
+
+addRows(src,dst){
+
+for(let i=0;i<this.mat[0].length;i++){
+
+```
+ this.mat[dst][i] ^=
+   this.mat[src][i];
+```
+
+}
+}
+
+swapRows(i,j){
+
+for(let k=0;k<this.mat[0].length;k++){
+
+```
+ let t=this.mat[i][k];
+
+ this.mat[i][k]=
+   this.mat[j][k];
+
+ this.mat[j][k]=t;
+```
+
+}
+}
+
+addColumns(src,dst){
+
+for(let i=0;i<this.mat.length;i++){
+
+```
+ this.mat[i][dst] ^=
+   this.mat[i][src];
+```
+
+}
+}
+
+swapColumns(i,j){
+
+for(let k=0;k<this.mat.length;k++){
+
+```
+ let t=this.mat[k][i];
+
+ this.mat[k][i]=
+   this.mat[k][j];
+
+ this.mat[k][j]=t;
+```
+
+}
+}
+}
+
+ function reverseBits(bitString){
 return new Xoroshiro128p(0n,0n);
 }
 
