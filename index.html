@@ -279,7 +279,6 @@ back(n=1){
 
 for(let step=0;step<n;step++){
 
-```
  let num3=this.s0;
  let num4=this.s1;
 
@@ -299,7 +298,6 @@ for(let step=0;step<n;step++){
  this.s1=
   (t^rotl(num4,27))
   &MASK64;
-```
 
 }
 }
@@ -328,10 +326,8 @@ addRows(src,dst){
 
 for(let i=0;i<this.mat[0].length;i++){
 
-```
  this.mat[dst][i] ^=
    this.mat[src][i];
-```
 
 }
 }
@@ -340,14 +336,12 @@ swapRows(i,j){
 
 for(let k=0;k<this.mat[0].length;k++){
 
-```
  let t=this.mat[i][k];
 
  this.mat[i][k]=
    this.mat[j][k];
 
  this.mat[j][k]=t;
-```
 
 }
 }
@@ -356,10 +350,8 @@ addColumns(src,dst){
 
 for(let i=0;i<this.mat.length;i++){
 
-```
  this.mat[i][dst] ^=
    this.mat[i][src];
-```
 
 }
 }
@@ -368,14 +360,12 @@ swapColumns(i,j){
 
 for(let k=0;k<this.mat.length;k++){
 
-```
  let t=this.mat[k][i];
 
  this.mat[k][i]=
    this.mat[k][j];
 
  this.mat[k][j]=t;
-```
 
 }
 }
@@ -436,10 +426,8 @@ matrix.mat[i][i]=true;
 
 for(let j=0;j<length;j++){
 
-```
  matrix2.mat[i][j]=
    this.mat[i][j];
-```
 
 }
 }
@@ -451,7 +439,6 @@ for(let k=0;k<length;k++){
 
 for(let l=num;l<length;l++){
 
-```
  if(matrix2.mat[k][l]){
 
    for(let m=0;m<length;m++){
@@ -475,7 +462,6 @@ for(let l=num;l<length;l++){
 
    break;
  }
-```
 
 }
 }
@@ -504,9 +490,7 @@ for(let i=0;i<64;i++){
 
 if(matrix.getElement(i,0)){
 
-```
  s0 |= (1n << BigInt(i));
-```
 
 }
 }
@@ -515,9 +499,7 @@ for(let j=0;j<64;j++){
 
 if(matrix.getElement(j+64,0)){
 
-```
  s1 |= (1n << BigInt(j));
-```
 
 }
 }
@@ -545,27 +527,22 @@ BigInt(l % 64);
 
 if(l < 64){
 
-```
  rng.setState(
    num2,
    0n
  );
-```
 
 }else{
 
-```
  rng.setState(
    0n,
    num2
  );
-```
 
 }
 
 for(let m=0;m<128;m++){
 
-```
  let test =
    new Xoroshiro128p(
      rng.s0,
@@ -588,7 +565,6 @@ for(let m=0;m<128;m++){
    l,
    num3 > 0n
  );
-```
 
 }
 }
