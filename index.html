@@ -380,7 +380,47 @@ for(let k=0;k<this.mat.length;k++){
 }
 }
 }
+mulMatrix(b){
 
+let matrix =
+new Matrix(
+this.mat.length,
+b.mat[0].length
+);
+
+if(
+this.mat[0].length !==
+b.mat.length
+){
+return matrix;
+}
+
+let length=this.mat.length;
+let length2=b.mat[0].length;
+let length3=this.mat[0].length;
+
+for(let i=0;i<length;i++){
+
+for(let j=0;j<length2;j++){
+
+```
+ for(let k=0;k<length3;k++){
+
+   matrix.mat[i][j] ^=
+     (
+       this.mat[i][k] &&
+       b.mat[k][j]
+     );
+ }
+```
+
+}
+}
+
+return matrix;
+}
+
+ 
  function reverseBits(bitString){
 return new Xoroshiro128p(0n,0n);
 }
