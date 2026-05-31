@@ -767,21 +767,44 @@ let rng =
 
 rng.advance(rangeMin);
 
-let test = "";
+let windowBits = "";
 
-for(let i=0;i<20;i++){
+let candidates = [];
 
- test +=
+for(
+ let k=rangeMin;
+ k<=rangeMax;
+ k++
+){
+
+ windowBits +=
  rng.getRandMax(2)
  .toString();
 
+ if(
+  windowBits.length >
+  text.length
+ ){
+  windowBits =
+  windowBits.substring(
+   1,
+   text.length
+  );
+ }
+
+ if(
+  windowBits === text
+ ){
+  candidates.push(k);
+ }
 }
 
 document.getElementById(
-  "currentResult"
+ "currentResult"
 ).innerHTML =
-test;
 
+"候補数 : " +
+candidates.length;
 }
 </script>
 
