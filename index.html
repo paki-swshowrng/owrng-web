@@ -698,12 +698,40 @@ return rng;
 
 
  setBits("");
- function calculateCurrent(){
+function calculateCurrent(){
+
+ let text =
+ document.getElementById(
+   "currentBits"
+ ).value;
+
+ text =
+ text.replace(/[^01]/g,"");
+
+ let rangeMin =
+ parseInt(
+   document.getElementById(
+     "rangeMin"
+   ).value
+ );
+
+ let rangeMax =
+ parseInt(
+   document.getElementById(
+     "rangeMax"
+   ).value
+ );
 
  document.getElementById(
    "currentResult"
  ).innerHTML =
- "動作確認OK";
+ "入力長 : " +
+ text.length +
+ "<br>" +
+ "検索範囲 : " +
+ rangeMin +
+ " ～ " +
+ rangeMax;
 }
 </script>
 
