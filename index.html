@@ -232,7 +232,84 @@ function calculateTSV(){
  tsvResult.innerHTML="TSV : "+((tid^sid)>>4);
 }
 
-setBits("");
+const MASK64 = (1n << 64n) - 1n;
+
+function rotl(x,k){
+return (((x << BigInt(k)) & MASK64) |
+(x >> BigInt(64-k))) & MASK64;
+}
+
+function rotr(x,k){
+return ((x >> BigInt(k)) |
+((x << BigInt(64-k)) & MASK64)) & MASK64;
+}
+
+class Xoroshiro128p{
+
+constructor(s0,s1){
+this.s0=BigInt(s0);
+this.s1=BigInt(s1);
+}
+
+setState(s0,s1){
+this.s0=BigInt(s0)&MASK64;
+this.s1=BigInt(s1)&MASK64;
+}
+
+getRand(){
+
+const num=this.s0;
+const num2=num^this.s1;
+
+const result=
+(this.s0+this.s1)&MASK64;
+
+this.s0=
+(rotl(num,24)^
+num2^
+((num2<<16n)&MASK64))
+&MASK64;
+
+this.s1=rotl(num2,37);
+
+return result;
+}
+
+back(n=1){
+
+for(let step=0;step<n;step++){
+
+```
+ let num3=this.s0;
+ let num4=this.s1;
+
+ let t=
+   rotr(
+     (
+       num3 ^
+       ((rotl(num4,27)<<16n)&MASK64)
+     )&MASK64,
+     24
+   ) ^ rotl(num4,3);
+
+ t&=MASK64;
+
+ this.s0=t;
+
+ this.s1=
+  (t^rotl(num4,27))
+  &MASK64;
+```
+
+}
+}
+}
+
+function reverseBits(bitString){
+return new Xoroshiro128p(0n,0n);
+}
+
+ setBits("");
 </script>
 
 </body>
