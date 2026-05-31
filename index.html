@@ -495,6 +495,38 @@ return matrix;
 }
 }
 
+function toXoroshiro128(matrix){
+
+let s0 = 0n;
+let s1 = 0n;
+
+for(let i=0;i<64;i++){
+
+if(matrix.getElement(i,0)){
+
+```
+ s0 |= (1n << BigInt(i));
+```
+
+}
+}
+
+for(let j=0;j<64;j++){
+
+if(matrix.getElement(j+64,0)){
+
+```
+ s1 |= (1n << BigInt(j));
+```
+
+}
+}
+
+return new Xoroshiro128p(
+s0,
+s1
+);
+}
  
  function reverseBits(bitString){
 return new Xoroshiro128p(0n,0n);
