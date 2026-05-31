@@ -335,6 +335,32 @@ this.s1=rotl(num2,37);
 return result;
 }
 
+getRandMax(num){
+
+ num = BigInt(num);
+
+ let mask = 1n;
+
+ while(mask < num){
+   mask =
+   (mask << 1n) | 1n;
+ }
+
+ let value;
+
+ do{
+
+   value =
+   this.getRand() &
+   mask;
+
+ }while(
+   value >= num
+ );
+
+ return value;
+}
+ 
 back(n=1){
 
 for(let step=0;step<n;step++){
