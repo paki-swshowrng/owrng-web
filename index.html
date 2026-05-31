@@ -339,6 +339,22 @@ for(let step=0;step<n;step++){
 }
 }
 
+ Xoroshiro128p.prototype.advance = function(n=1){
+
+ if(n < 0){
+
+   for(let i=0;i<Math.abs(n);i++){
+     this.back(1);
+   }
+
+   return;
+ }
+
+ for(let i=0;i<n;i++){
+   this.getRand();
+ }
+}
+ 
 class Matrix{
 
 constructor(row,col){
