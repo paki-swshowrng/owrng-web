@@ -145,6 +145,18 @@ onclick="closeMenu()">
 <button class="actionButton" onclick="calculateSeed()">Seed特定</button>
 
 <div id="result">結果がここに表示されます</div>
+<h2>現在位置特定</h2>
+
+<input id="rangeMin" value="0">
+<input id="rangeMax" value="10000">
+
+<textarea id="currentBits"></textarea>
+
+<button onclick="calculateCurrent()">
+現在位置特定
+</button>
+
+<div id="currentResult"></div>
 </div>
 
 <div id="tsvPage" class="page">
