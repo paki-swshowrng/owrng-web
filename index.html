@@ -527,7 +527,75 @@ s0,
 s1
 );
 }
- 
+ function createLowBits(){
+
+let lowbits = new Matrix(128,128);
+
+let rng =
+new Xoroshiro128p(
+0n,
+0n
+);
+
+for(let l=0;l<128;l++){
+
+let num2 =
+1n <<
+BigInt(l % 64);
+
+if(l < 64){
+
+```
+ rng.setState(
+   num2,
+   0n
+ );
+```
+
+}else{
+
+```
+ rng.setState(
+   0n,
+   num2
+ );
+```
+
+}
+
+for(let m=0;m<128;m++){
+
+```
+ let test =
+   new Xoroshiro128p(
+     rng.s0,
+     rng.s1
+   );
+
+ for(
+   let n=0;
+   n<m;
+   n++
+ ){
+   test.getRand();
+ }
+
+ let num3 =
+   test.getRand() & 1n;
+
+ lowbits.setElement(
+   m,
+   l,
+   num3 > 0n
+ );
+```
+
+}
+}
+
+return lowbits;
+}
+
  function reverseBits(bitString){
 return new Xoroshiro128p(0n,0n);
 }
