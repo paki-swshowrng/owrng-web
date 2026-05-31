@@ -258,6 +258,9 @@ function calculateSeed(){
 
  let rng = reverseBits(bits);
 
+window.currentS0 = rng.s0;
+window.currentS1 = rng.s1;
+
  let s0 =
    rng.s0
    .toString(16)
