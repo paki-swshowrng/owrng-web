@@ -145,18 +145,27 @@ onclick="closeMenu()">
 <button class="actionButton" onclick="calculateSeed()">Seed特定</button>
 
 <div id="result">結果がここに表示されます</div>
-<h2>現在位置特定</h2>
+<hr>
 
+<h2>現在位置特定(開発中)</h2>
+
+<p>検索開始</p>
 <input id="rangeMin" value="0">
+
+<p>検索終了</p>
 <input id="rangeMax" value="10000">
 
+<p>0/1入力</p>
 <textarea id="currentBits"></textarea>
 
-<button onclick="calculateCurrent()">
+<button
+class="actionButton"
+onclick="calculateCurrent()">
 現在位置特定
 </button>
 
-<div id="currentResult"></div>
+<div id="currentResult">
+結果がここに表示されます
 </div>
 
 <div id="tsvPage" class="page">
@@ -689,6 +698,13 @@ return rng;
 
 
  setBits("");
+ function calculateCurrent(){
+
+ document.getElementById(
+   "currentResult"
+ ).innerHTML =
+ "動作確認OK";
+}
 </script>
 
 </body>
