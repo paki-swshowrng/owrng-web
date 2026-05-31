@@ -169,6 +169,8 @@ onclick="calculateCurrent()">
 結果がここに表示されます
 </div>
 
+ <div id="currentStateResult"></div>
+
 <div id="tsvPage" class="page">
 <h2>TSV計算</h2>
 <p>TID</p>
@@ -818,6 +820,37 @@ document.getElementById(
 candidates.length +
 "<br><br>" +
 candidates.slice(0,20).join(",");
+if(candidates.length === 1){
+
+ let rng2 =
+  new Xoroshiro128p(
+   window.currentS0,
+   window.currentS1
+  );
+
+ rng2.advance(
+  candidates[0]
+ );
+
+ document.getElementById(
+  "currentStateResult"
+ ).innerHTML =
+
+ "現在位置特定成功<br><br>" +
+
+ "S0<br>" +
+ rng2.s0
+  .toString(16)
+  .toUpperCase()
+  .padStart(16,"0") +
+
+ "<br><br>S1<br>" +
+
+ rng2.s1
+  .toString(16)
+  .toUpperCase()
+  .padStart(16,"0");
+}
 }
 </script>
 
