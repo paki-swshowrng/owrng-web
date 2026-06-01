@@ -31,15 +31,50 @@ onclick="closeMenu()">
 <div id="counter">0 / 128</div>
 
 <div class="bitButtons">
-<button onclick="appendBit('0')">0</button>
-<button onclick="appendBit('1')">1</button>
+<button onclick="appendBit('0')">物理(0)</button>
+<button onclick="appendBit('1')">特殊(1)</button>
 </div>
 
-<button class="actionButton" onclick="removeBit()">1文字戻す</button>
-<br>
-<button class="actionButton" onclick="calculateSeed()">Seed特定</button>
+<div class="topButtons">
+
+<button class="actionButton"
+onclick="calculateSeed()">
+計算
+</button>
+
+<button class="actionButton"
+onclick="clearAll()">
+クリア
+</button>
+
+</div>
 
 <div id="result">結果がここに表示されます</div>
+<hr>
+
+<div class="stateArea">
+
+<div class="stateBox">
+<h3>開始state</h3>
+
+<p>S0</p>
+<input id="startS0" readonly>
+
+<p>S1</p>
+<input id="startS1" readonly>
+</div>
+
+<div class="stateBox">
+<h3>現在state</h3>
+
+<p>S0</p>
+<input id="currentS0" readonly>
+
+<p>S1</p>
+<input id="currentS1" readonly>
+</div>
+
+</div>
 <hr>
 
 <h2>現在位置特定(開発中)</h2>
@@ -50,11 +85,29 @@ Motion一覧
 
 <div id="motionResult"></div>
 
-<p>検索開始</p>
+<div class="searchArea">
+
+<div class="searchBox">
+
+<h3>検索範囲</h3>
+
 <input id="rangeMin" value="0">
 
-<p>検索終了</p>
+～
+
 <input id="rangeMax" value="10000">
+
+</div>
+
+<div class="searchBox">
+
+<h3>目標個体消費数</h3>
+
+<input id="targetAdvance">
+
+</div>
+
+</div>
 
 <p>0/1入力</p>
 <textarea id="currentBits"></textarea>
@@ -76,7 +129,16 @@ Motion一覧
 </div>
 
  <div id="currentStateResult"></div>
+<table id="consumeTable">
 
+<tr>
+<th></th>
+<th>消費数</th>
+<th>合計消費数</th>
+<th>目標までの消費数</th>
+</tr>
+
+</table>
 <div id="tsvPage" class="page">
 <h2>TSV計算</h2>
 <p>TID</p>

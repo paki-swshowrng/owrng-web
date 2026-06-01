@@ -822,4 +822,65 @@ function showMotionList(){
   "motionResult"
  ).innerHTML = html;
 }
-   
+function clearAll(){
+
+ if(
+  !confirm(
+   "本当にクリアしますか？"
+  )
+ ){
+  return;
+ }
+
+ document.getElementById(
+  "bitsInput"
+ ).value = "";
+
+ document.getElementById(
+  "counter"
+ ).innerHTML =
+ "0 / 128";
+
+ document.getElementById(
+  "result"
+ ).innerHTML =
+ "結果がここに表示されます";
+
+ document.getElementById(
+  "currentBits"
+ ).value = "";
+
+ document.getElementById(
+  "currentResult"
+ ).innerHTML =
+ "結果がここに表示されます";
+
+ document.getElementById(
+  "currentStateResult"
+ ).innerHTML = "";
+
+ document.getElementById(
+  "startS0"
+ ).value = "";
+
+ document.getElementById(
+  "startS1"
+ ).value = "";
+
+ document.getElementById(
+  "currentS0"
+ ).value = "";
+
+ document.getElementById(
+  "currentS1"
+ ).value = "";
+
+ document.getElementById(
+  "rangeMin"
+ ).value = "0";
+
+ document.getElementById(
+  "rangeMax"
+ ).value = "10000";
+
+}   
