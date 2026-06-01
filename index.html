@@ -354,23 +354,32 @@ getRandMax(num){
 
  num = BigInt(num);
 
- let mask = 1n;
+ let mask;
 
- while(mask < num){
-   mask =
-   (mask << 1n) | 1n;
+ if(
+  (num & (num - 1n))
+  === 0n
+ ){
+  mask = num - 1n;
+ }else{
+
+  mask = 1n;
+
+  while(mask < num){
+   mask <<= 1n;
+  }
+
+  mask -= 1n;
  }
 
  let value;
 
  do{
-
-   value =
+  value =
    this.getRand() &
    mask;
-
  }while(
-   value >= num
+  value >= num
  );
 
  return value;
