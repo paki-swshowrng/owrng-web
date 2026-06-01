@@ -150,6 +150,12 @@ onclick="closeMenu()">
 
 <h2>現在位置特定(開発中)</h2>
 
+ <button onclick="showMotionList()">
+Motion一覧
+</button>
+
+<div id="motionResult"></div>
+
 <p>検索開始</p>
 <input id="rangeMin" value="0">
 
@@ -930,6 +936,78 @@ rng2.advance(
   "motionResult"
  ).innerHTML = html;
 }
+
+function showMotionList(){
+
+ let rangeMin =
+ parseInt(
+  document.getElementById(
+   "rangeMin"
+  ).value
+ );
+
+ let rangeMax =
+ parseInt(
+  document.getElementById(
+   "rangeMax"
+  ).value
+ );
+
+ let rng =
+ new Xoroshiro128p(
+  window.currentS0,
+  window.currentS1
+ );
+
+ rng.advance(rangeMin);
+
+ let html =
+ "<table border='1'>" +
+ "<tr>" +
+ "<th>F</th>" +
+ "<th>Motion</th>" +
+ "<th>S0</th>" +
+ "<th>S1</th>" +
+ "</tr>";
+
+ let motion = "-";
+
+ for(
+  let f=rangeMin;
+  f<=rangeMax;
+  f++
+ ){
+
+  html +=
+  "<tr>" +
+  "<td>"+f+"</td>" +
+  "<td>"+motion+"</td>" +
+  "<td>"+
+   rng.s0
+   .toString(16)
+   .toUpperCase()
+   .padStart(16,"0")+
+  "</td>" +
+  "<td>"+
+   rng.s1
+   .toString(16)
+   .toUpperCase()
+   .padStart(16,"0")+
+  "</td>" +
+  "</tr>";
+
+  motion =
+   rng.getRandMax(2)
+   .toString();
+ }
+
+ html += "</table>";
+
+ document.getElementById(
+  "motionResult"
+ ).innerHTML = html;
+}
+ 
 </script>
 
 </body>
