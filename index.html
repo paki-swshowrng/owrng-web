@@ -838,7 +838,10 @@ document.getElementById(
 "候補数 : " +
 candidates.length +
 "<br><br>" +
-candidates.slice(0,20).join(",");
+candidates
+ .slice(0,20)
+ .map(x => x + 1)
+ .join(",")
 if(candidates.length === 1){
 
  let rng2 =
