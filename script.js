@@ -75,8 +75,8 @@ function calculateSeed(){
 
  let rng = reverseBits(bits);
 
-window.currentS0 = rng.s0;
-window.currentS1 = rng.s1;
+window.rngS0 = rng.s0;
+window.rngS1 = rng.s1;
 
 document.getElementById(
  "startS0"
@@ -564,10 +564,10 @@ return rng;
 function calculateCurrent(){
 
  if(
- typeof window.currentS0 === "undefined"
+ typeof window.rngS0 === "undefined"
 ){
  currentResult.innerHTML =
-   "先にSeed特定してください";
+   "候補数：-";
  return;
 }
 
@@ -595,8 +595,8 @@ function calculateCurrent(){
 
 let rng =
  new Xoroshiro128p(
-   window.currentS0,
-   window.currentS1
+   window.rngS0,
+   window.rngS1
  );
 
 rng.advance(rangeMin);
@@ -666,8 +666,8 @@ if(candidates.length === 1){
 
  let rng2 =
   new Xoroshiro128p(
-   window.currentS0,
-   window.currentS1
+   window.rngS0,
+   window.rngS1
   );
 
 rng2.advance(
@@ -728,8 +728,8 @@ document.getElementById(
   .toUpperCase()
   .padStart(16,"0");
 
-  window.currentS0 = rng2.s0;
-window.currentS1 = rng2.s1;
+  window.rngS0 = rng2.s0;
+window.rngS1 = rng2.s1;
 
 document.getElementById(
  "bitsInput"
@@ -761,8 +761,8 @@ document.getElementById(
 
  let rng =
  new Xoroshiro128p(
-  window.currentS0,
-  window.currentS1
+  window.rngS0,
+  window.rngS1
  );
 
  rng.advance(rangeMin);
@@ -833,8 +833,8 @@ function showMotionList(){
 
  let rng =
  new Xoroshiro128p(
-  window.currentS0,
-  window.currentS1
+  window.rngS0,
+  window.rngS1
  );
 
  rng.advance(rangeMin);
@@ -1001,7 +1001,7 @@ function calculate(){
  }
 
  if(
-  typeof window.currentS0 ===
+  typeof window.rngS0 ===
   "undefined"
  ){
 
@@ -1012,10 +1012,14 @@ function calculate(){
 
 }
 
-function checkAutoCalculate(){  
 
-  console.log(event?.isComposing);
-
+  
+  console.log(
+  "isComposing=",
+  event?.isComposing
+ );
+function checkAutoCalculate(){ 
+ 
   bitsInput.value =
  bitsInput.value
   .replace(/０/g,"0")
@@ -1038,11 +1042,11 @@ if(window.isComposing){
  }
 
  if(
-  typeof window.currentS0 !==
-  "undefined"
- ){
-  calculateCurrent();
- }
+ typeof window.rngS0 !==
+ "undefined"
+){
+ calculateCurrent();
+}
 
 }
 
