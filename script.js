@@ -39,6 +39,16 @@ function getBits(){
 }
 
 function setBits(bits){
+
+  if(window.isComposing){
+ return;
+}
+
+console.log(
+ "SETBITS",
+ window.isComposing
+);
+
  let lines=[];
  for(let i=0;i<bits.length;i+=32){
    lines.push(bits.slice(i,i+32));
@@ -1019,20 +1029,35 @@ function calculate(){
   event?.isComposing
  );
 function checkAutoCalculate(){ 
+
+  console.log(
+ "composing=",
+ window.isComposing
+);
  
   bitsInput.value =
  bitsInput.value
   .replace(/０/g,"0")
   .replace(/１/g,"1");
 
-if(window.isComposing){
-  return;
- }
+if(
+ window.isComposing &&
+ getBits().length >= 32
+){
+ return;
+}
   
-  let bits =
-  getBits();
+let bits =
+ getBits();
 
-   setBits(bits);
+if(bits.length === 34){
+
+ bitsInput.blur();
+ bitsInput.focus();
+
+}
+
+setBits(bits);
 
  if(bits.length === 128){
 
@@ -1050,6 +1075,33 @@ if(window.isComposing){
 
 }
 
+window.isComposing = false;
+
+bitsInput.addEventListener(
+ "compositionstart",
+ ()=>{
+  console.log("START");
+  window.isComposing = true;
+ }
+);
+
+bitsInput.addEventListener(
+ "compositionend",
+ ()=>{
+
+  console.log("END");
+
+  window.isComposing = false;
+
+  let bits =
+   getBits();
+
+  setBits(bits);
+
+  checkAutoCalculate();
+
+ }
+);
 
 
 
