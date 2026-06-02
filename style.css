@@ -143,6 +143,16 @@ padding:8px;
 text-align:center;
 }
 
+#consumeBody tr:nth-child(odd){
+background:white;
+color:black;
+}
+
+#consumeBody tr:nth-child(even){
+background:#fff8dc;
+color:black;
+}
+
 #consumeTable th{
 background:#222;
 }

@@ -49,9 +49,15 @@ function setBits(bits){
 
 function appendBit(bit){
  let bits=getBits();
+
  if(bits.length>=128)return;
  bits+=bit;
  setBits(bits);
+
+console.log("length=", bits.length);
+
+
+
 }
 
 function removeBit(){
@@ -649,7 +655,8 @@ if(k < rangeMin + 20){
    windowBits
  );
 }
- if(
+
+if(
   windowBits === text
  ){
  candidates.push(k);
@@ -659,6 +666,19 @@ if(k < rangeMin + 20){
    windowBits
  );
  }
+
+  if(
+  candidates.length > 100
+ ){
+
+  document.getElementById(
+   "currentResult"
+  ).innerHTML =
+   "候補数 : 100以上";
+
+  return;
+
+}
 }
 
 document.getElementById(
@@ -1007,3 +1027,62 @@ function addConsumeRow(
 
  "</tr>";
 }
+
+function calculate(){
+
+ let text =
+ document.getElementById(
+  "bitsInput"
+ ).value;
+
+ text =
+ text.replace(/[^01]/g,"");
+
+ if(
+  text.length === 128
+ ){
+  calculateSeed();
+  return;
+ }
+
+ if(
+  typeof window.currentS0 ===
+  "undefined"
+ ){
+
+  document.getElementById(
+   "result"
+  ).innerHTML =
+   "先に128bitから開始stateを求めてください";
+
+  return;
+ }
+
+ calculateCurrent();
+
+}
+
+function checkAutoCalculate(){
+
+ let bits =
+  getBits();
+
+ console.log(
+  "auto",
+  bits.length
+ );
+
+ if(bits.length === 128){
+
+  console.log(
+   "AUTO CALCULATE"
+  );
+
+  calculateSeed();
+
+ }
+
+}
+
+
+

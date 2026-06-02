@@ -26,7 +26,10 @@ onclick="closeMenu()">
 <div id="seedPage" class="page active">
 <h2>Seed計算</h2>
 
-<textarea id="bitsInput"></textarea>
+<textarea
+ id="bitsInput"
+ oninput="checkAutoCalculate()">
+</textarea>
 
 <div id="counter">0 / 128</div>
 
@@ -37,8 +40,9 @@ onclick="closeMenu()">
 
 <div class="topButtons">
 
-<button class="actionButton"
-onclick="calculateSeed()">
+<button
+ class="actionButton"
+ onclick="calculate()">
 計算
 </button>
 
@@ -111,11 +115,7 @@ Motion一覧
 
 
 
-<button
-class="actionButton"
-onclick="calculateCurrent()">
-現在位置特定
-</button>
+
 
  <button onclick="showMotionList()">
 Motion一覧
