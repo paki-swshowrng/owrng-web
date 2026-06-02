@@ -1014,6 +1014,8 @@ function calculate(){
 
 function checkAutoCalculate(){  
 
+  console.log(event?.isComposing);
+
   bitsInput.value =
  bitsInput.value
   .replace(/０/g,"0")
