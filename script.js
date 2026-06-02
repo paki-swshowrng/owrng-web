@@ -54,9 +54,9 @@ function appendBit(bit){
  bits+=bit;
  setBits(bits);
 
+checkAutoCalculate();
+
 console.log("length=", bits.length);
-
-
 
 }
 
@@ -777,6 +777,17 @@ document.getElementById(
   .toUpperCase()
   .padStart(16,"0");
 
+  window.currentS0 = rng2.s0;
+window.currentS1 = rng2.s1;
+
+document.getElementById(
+ "bitsInput"
+).value = "";
+
+document.getElementById(
+ "counter"
+).innerHTML =
+ "0 / 128";
 
 }
 }
@@ -1067,22 +1078,23 @@ function checkAutoCalculate(){
  let bits =
   getBits();
 
- console.log(
-  "auto",
-  bits.length
- );
-
  if(bits.length === 128){
-
-  console.log(
-   "AUTO CALCULATE"
-  );
 
   calculateSeed();
 
+  return;
+ }
+
+ if(
+  typeof window.currentS0 !==
+  "undefined"
+ ){
+  calculateCurrent();
  }
 
 }
+
+
 
 
 
