@@ -74,9 +74,6 @@ function calculateSeed(){
  let bits = getBits();
 
  if(bits.length !== 128){
-
-   result.innerHTML =
-     "128bit入力してください";
    return;
  }
 
@@ -100,25 +97,6 @@ document.getElementById(
   .toString(16)
   .toUpperCase()
   .padStart(16,"0");
-
- let s0 =
-   rng.s0
-   .toString(16)
-   .toUpperCase()
-   .padStart(16,"0");
-
- let s1 =
-   rng.s1
-   .toString(16)
-   .toUpperCase()
-   .padStart(16,"0");
-
- result.innerHTML =
-   "state[0]<br>" +
-   s0 +
-   "<br><br>" +
-   "state[1]<br>" +
-   s1;
 
    window.seedCalculated = true;
 
@@ -686,12 +664,8 @@ document.getElementById(
 ).innerHTML =
 
 "候補数 : " +
-candidates.length +
-"<br><br>" +
-candidates
- .slice(0,20)
- .map(x => x + 1)
- .join(",")
+candidates.length;
+
 if(candidates.length === 1){
 
  let rng2 =
@@ -741,25 +715,6 @@ addConsumeRow(
 
 window.lastAdvance =
  currentAdvance;
-
- document.getElementById(
-  "currentStateResult"
- ).innerHTML =
-
- "現在位置特定成功<br><br>" +
-
- "S0<br>" +
- rng2.s0
-  .toString(16)
-  .toUpperCase()
-  .padStart(16,"0") +
-
- "<br><br>S1<br>" +
-
- rng2.s1
-  .toString(16)
-  .toUpperCase()
-  .padStart(16,"0");
 
   document.getElementById(
  "currentS0"
@@ -955,13 +910,6 @@ function clearAll(){
  "0 / 128";
 
  document.getElementById(
-  "result"
- ).innerHTML =
- "結果がここに表示されます";
-
-
-
- document.getElementById(
   "currentResult"
  ).innerHTML =
  "結果がここに表示されます";
@@ -1060,11 +1008,6 @@ function calculate(){
   typeof window.currentS0 ===
   "undefined"
  ){
-
-  document.getElementById(
-   "result"
-  ).innerHTML =
-   "先に128bitから開始stateを求めてください";
 
   return;
  }

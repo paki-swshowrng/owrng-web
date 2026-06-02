@@ -162,3 +162,18 @@ font-size:12px;
 padding:8px;
 }
 
+.statusBar{
+ display:flex;
+ justify-content:space-between;
+ margin-top:5px;
+ margin-bottom:10px;
+}
+
+#counter{
+ text-align:left;
+}
+
+#currentResult{
+ text-align:right;
+}
+

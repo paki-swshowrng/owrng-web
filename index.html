@@ -24,14 +24,23 @@ onclick="closeMenu()">
 </div>
  
 <div id="seedPage" class="page active">
-<h2>Seed計算</h2>
 
 <textarea
  id="bitsInput"
  oninput="checkAutoCalculate()">
 </textarea>
 
-<div id="counter">0 / 128</div>
+<div class="statusBar"></div>
+
+<div id="counter">
+    0 / 128
+</div>
+
+<div id="currentResult">
+候補数 : -
+</div>
+
+</div>
 
 <div class="bitButtons">
 <button onclick="appendBit('0')">物理(0)</button>
@@ -53,7 +62,6 @@ onclick="clearAll()">
 
 </div>
 
-<div id="result">結果がここに表示されます</div>
 <hr>
 
 <div class="stateArea">
@@ -81,11 +89,8 @@ onclick="clearAll()">
 </div>
 <hr>
 
-<h2>現在位置特定(開発中)</h2>
 
- <button onclick="showMotionList()">
-Motion一覧
-</button>
+
 
 <div id="motionResult"></div>
 
@@ -117,18 +122,10 @@ Motion一覧
 
 
 
- <button onclick="showMotionList()">
-Motion一覧
-</button>
+
 
 <div id="motionResult"></div>
 
-<div id="currentResult">
-結果がここに表示されます
-</div>
-
- <div id="currentStateResult"></div>
- 
 <table id="consumeTable">
 
 <tr>
