@@ -65,10 +65,6 @@ function removeBit(){
  setBits(bits.slice(0,-1));
 }
 
-bitsInput.addEventListener("input",()=>{
- setBits(getBits());
-});
-
 function calculateSeed(){
 
  let bits = getBits();
@@ -912,7 +908,7 @@ function clearAll(){
  document.getElementById(
   "currentResult"
  ).innerHTML =
- "結果がここに表示されます";
+ "候補数 : -";
 
  document.getElementById(
   "currentStateResult"
@@ -1016,10 +1012,21 @@ function calculate(){
 
 }
 
-function checkAutoCalculate(){
+function checkAutoCalculate(){  
 
- let bits =
+  bitsInput.value =
+ bitsInput.value
+  .replace(/０/g,"0")
+  .replace(/１/g,"1");
+
+if(window.isComposing){
+  return;
+ }
+  
+  let bits =
   getBits();
+
+   setBits(bits);
 
  if(bits.length === 128){
 

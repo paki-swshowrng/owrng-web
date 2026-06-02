@@ -27,7 +27,9 @@ onclick="closeMenu()">
 
 <textarea
  id="bitsInput"
- oninput="checkAutoCalculate()">
+ oninput="checkAutoCalculate()"
+ oncompositionstart="window.isComposing=true"
+ oncompositionend="window.isComposing=false">
 </textarea>
 
 <div class="statusBar">
