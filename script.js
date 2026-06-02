@@ -79,6 +79,22 @@ function calculateSeed(){
 window.currentS0 = rng.s0;
 window.currentS1 = rng.s1;
 
+document.getElementById(
+ "startS0"
+).value =
+ rng.s0
+  .toString(16)
+  .toUpperCase()
+  .padStart(16,"0");
+
+document.getElementById(
+ "startS1"
+).value =
+ rng.s1
+  .toString(16)
+  .toUpperCase()
+  .padStart(16,"0");
+
  let s0 =
    rng.s0
    .toString(16)
@@ -97,6 +113,17 @@ window.currentS1 = rng.s1;
    "<br><br>" +
    "state[1]<br>" +
    s1;
+
+   window.seedCalculated = true;
+
+document.getElementById(
+ "bitsInput"
+).value = "";
+
+document.getElementById(
+ "counter"
+).innerHTML =
+ "0 / 128";
 }
 
 function calculateTSV(){
@@ -566,7 +593,7 @@ function calculateCurrent(){
 
  let text =
  document.getElementById(
-   "currentBits"
+   "bitsInput"
  ).value;
 
  text =
@@ -657,6 +684,44 @@ rng2.advance(
  candidates[0] + 1
 );
 
+let currentAdvance =
+ candidates[0] + 1;
+
+let targetAdvance =
+ parseInt(
+  document.getElementById(
+   "targetAdvance"
+  ).value
+ ) || 0;
+
+let consume;
+
+if(
+ typeof window.lastAdvance
+ === "undefined"
+){
+ consume =
+  currentAdvance;
+}
+else{
+ consume =
+  currentAdvance -
+  window.lastAdvance;
+}
+
+let remain =
+ targetAdvance -
+ currentAdvance;
+
+addConsumeRow(
+ consume,
+ currentAdvance,
+ remain
+);
+
+window.lastAdvance =
+ currentAdvance;
+
  document.getElementById(
   "currentStateResult"
  ).innerHTML =
@@ -671,6 +736,22 @@ rng2.advance(
 
  "<br><br>S1<br>" +
 
+ rng2.s1
+  .toString(16)
+  .toUpperCase()
+  .padStart(16,"0");
+
+  document.getElementById(
+ "currentS0"
+).value =
+ rng2.s0
+  .toString(16)
+  .toUpperCase()
+  .padStart(16,"0");
+
+document.getElementById(
+ "currentS1"
+).value =
  rng2.s1
   .toString(16)
   .toUpperCase()
@@ -822,6 +903,7 @@ function showMotionList(){
   "motionResult"
  ).innerHTML = html;
 }
+
 function clearAll(){
 
  if(
@@ -846,9 +928,7 @@ function clearAll(){
  ).innerHTML =
  "結果がここに表示されます";
 
- document.getElementById(
-  "currentBits"
- ).value = "";
+
 
  document.getElementById(
   "currentResult"
@@ -883,4 +963,47 @@ function clearAll(){
   "rangeMax"
  ).value = "10000";
 
+ delete window.lastAdvance;
+
+ document.getElementById(
+ "consumeBody"
+).innerHTML = "";
+
 }   
+
+function addConsumeRow(
+ consume,
+ total,
+ remain
+){
+
+ let tbody =
+ document.getElementById(
+  "consumeBody"
+ );
+
+ let no =
+ tbody.rows.length;
+
+ tbody.innerHTML +=
+
+ "<tr>" +
+
+ "<td>" +
+ no +
+ "</td>" +
+
+ "<td>" +
+ consume +
+ "</td>" +
+
+ "<td>" +
+ total +
+ "</td>" +
+
+ "<td>" +
+ remain +
+ "</td>" +
+
+ "</tr>";
+}
