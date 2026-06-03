@@ -181,8 +181,13 @@ padding:8px;
  display:flex;
  justify-content:center;
  align-items:center;
- gap:20px;
+ gap:10px;
  margin-top:15px;
+}
+
+#rangeMin,
+#rangeMax{
+ font-size:10px;
 }
 
 
