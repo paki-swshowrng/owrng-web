@@ -567,7 +567,11 @@ return rng;
 
 
  setBits("");
+
 function calculateCurrent(){
+
+  const start =
+ performance.now();
 
  if(
  typeof window.rngS0 === "undefined"
@@ -607,9 +611,30 @@ let rng =
 
 rng.advance(rangeMin);
 
-let windowBits = "";
-
 let candidates = [];
+
+if(
+ text.length === 0
+){
+ return;
+}
+
+if(
+ text.length > 30
+){
+ alert(
+  "現在State検索は30bitまでです"
+ );
+ return;
+}
+
+const targetBits =
+ parseInt(text, 2);
+
+const mask =
+ (1 << text.length) - 1;
+
+let windowBits = 0;
 
 for(
  let k=rangeMin;
@@ -617,23 +642,28 @@ for(
  k++
 ){
 
- windowBits +=
- rng.getRandMax(2)
- .toString();
- 
+windowBits =
+ (
+  (windowBits << 1)
+  |
+  Number(
+   rng.getRandMax(2)
+  )
+ ) & mask;
+
 if(
- windowBits.length >
- text.length
+ k >= rangeMin +
+ text.length - 1
 ){
- windowBits =
-  windowBits.substring(1);
-}
- 
-if(
-  windowBits === text
+
+ if(
+  windowBits ===
+  targetBits
  ){
- candidates.push(k);
+  candidates.push(k);
  }
+
+}
 
   if(
   candidates.length > 100
@@ -655,6 +685,13 @@ document.getElementById(
 
 "候補数 : " +
 candidates.length;
+
+console.log(
+ "calculateCurrent:",
+ (performance.now() - start)
+ .toFixed(1),
+ "ms"
+);
 
 if(candidates.length === 1){
 
