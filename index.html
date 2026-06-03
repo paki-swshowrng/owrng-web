@@ -71,33 +71,56 @@ onclick="clearAll()">
 
 <div class="stateArea">
 
-<div class="stateBox">
+<div style="width:100%;">
+
+<h3
+ onclick="toggleStateSection()"
+ id="stateTitle"
+>
+▼ State
+</h3>
+
+<div id="stateSection">
+
+    <div class="stateBox">
 <h3>開始state</h3>
 
 <p>S0</p>
-<input id="startS0" readonly>
+<input id="startS0">
 
 <p>S1</p>
-<input id="startS1" readonly>
+<input id="startS1">
 </div>
 
 <div class="stateBox">
 <h3>現在state</h3>
 
 <p>S0</p>
-<input id="currentS0" readonly>
+<input id="currentS0">
 
 <p>S1</p>
-<input id="currentS1" readonly>
+<input id="currentS1">
+        
+</div> 
+
 </div>
 
 </div>
+
+</div>
+
 <hr>
 
-
-
-
 <div id="motionResult"></div>
+
+<h3
+ onclick="toggleSearchSection()"
+ id="searchTitle"
+>
+▼ 検索設定
+</h3>
+
+<div id="searchSection">
 
 <div class="searchArea">
 
@@ -112,6 +135,8 @@ onclick="clearAll()">
 ～
 
 <input id="rangeMax" value="10000">
+
+</div>
 
 </div>
 

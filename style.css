@@ -123,6 +123,11 @@ margin-top:20px;
 width:48%;
 }
 
+#stateSection{
+ display:flex;
+ justify-content:space-between;
+}
+
 .searchArea{
  margin-top:10px;
 }

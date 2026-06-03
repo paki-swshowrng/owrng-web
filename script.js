@@ -1382,4 +1382,74 @@ document.getElementById(
  saveData
 );
 
+function toggleStateSection(){
 
+ const section =
+  document.getElementById(
+   "stateSection"
+  );
+
+ const title =
+  document.getElementById(
+   "stateTitle"
+  );
+
+ if(
+  section.style.display
+  === "none"
+ ){
+
+  section.style.display =
+   "flex";
+
+  title.innerHTML =
+   "▼ State";
+
+ }
+ else{
+
+  section.style.display =
+   "none";
+
+  title.innerHTML =
+   "▶ State";
+
+ }
+
+}
+
+function toggleSearchSection(){
+
+ const section =
+  document.getElementById(
+   "searchSection"
+  );
+
+ const title =
+  document.getElementById(
+   "searchTitle"
+  );
+
+ if(
+  section.style.display
+  === "none"
+ ){
+
+  section.style.display =
+   "block";
+
+  title.innerHTML =
+   "▼ 検索設定";
+
+ }
+ else{
+
+  section.style.display =
+   "none";
+
+  title.innerHTML =
+   "▶ 検索設定";
+
+ }
+
+}
