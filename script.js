@@ -1050,8 +1050,9 @@ function calculate(){
 
 }
 
-function checkAutoCalculate(){ 
-
+function checkAutoCalculate(){
+  
+  
 
   bitsInput.value =
  bitsInput.value
@@ -1084,11 +1085,33 @@ setBits(bits);
   return;
  }
 
- if(
+if(
  typeof window.rngS0 !==
  "undefined"
 ){
- calculateCurrent();
+
+ clearTimeout(
+  autoCalcTimer
+ );
+
+ console.log(
+ "計算予約"
+);
+
+autoCalcTimer =
+ setTimeout(
+  ()=>{
+
+   console.log(
+    "calculateCurrent実行"
+   );
+
+   calculateCurrent();
+
+  },
+  200
+ );
+
 }
 
 }
@@ -1453,3 +1476,5 @@ function toggleSearchSection(){
  }
 
 }
+
+let autoCalcTimer;
