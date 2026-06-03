@@ -44,11 +44,6 @@ function setBits(bits){
  return;
 }
 
-console.log(
- "SETBITS",
- window.isComposing
-);
-
  let lines=[];
  for(let i=0;i<bits.length;i+=32){
    lines.push(bits.slice(i,i+32));
@@ -65,8 +60,6 @@ function appendBit(bit){
  setBits(bits);
 
 checkAutoCalculate();
-
-console.log("length=", bits.length);
 
 }
 
@@ -636,22 +629,10 @@ if(
   windowBits.substring(1);
 }
  
-if(k < rangeMin + 20){
- console.log(
-   k,
-   windowBits
- );
-}
-
 if(
   windowBits === text
  ){
  candidates.push(k);
-  console.log(
-   "hit",
-   k + 1,
-   windowBits
- );
  }
 
   if(
@@ -903,8 +884,6 @@ function showMotionList(){
 
 function clearAll(){
 
-  console.log("clearAll");
-
  if(
   !confirm(
    "本当にクリアしますか？"
@@ -934,13 +913,6 @@ function clearAll(){
  document.getElementById(
  "startS0"
 ).value = "";
-
-console.log(
- "startS0=",
- document.getElementById(
-  "startS0"
- ).value
-);
 
  document.getElementById(
   "startS1"
@@ -1041,19 +1013,9 @@ function calculate(){
 
 }
 
-
-  
-  console.log(
-  "isComposing=",
-  event?.isComposing
- );
 function checkAutoCalculate(){ 
 
-  console.log(
- "composing=",
- window.isComposing
-);
- 
+
   bitsInput.value =
  bitsInput.value
   .replace(/０/g,"0")
@@ -1096,19 +1058,10 @@ setBits(bits);
 
 window.isComposing = false;
 
-bitsInput.addEventListener(
- "compositionstart",
- ()=>{
-  console.log("START");
-  window.isComposing = true;
- }
-);
 
 bitsInput.addEventListener(
  "compositionend",
  ()=>{
-
-  console.log("END");
 
   window.isComposing = false;
 
@@ -1123,8 +1076,6 @@ bitsInput.addEventListener(
 );
 
 function saveData(){
-
-  console.log("saveData");
 
  sessionStorage.setItem(
   "bitsInput",
@@ -1217,8 +1168,6 @@ sessionStorage.setItem(
   "lastAdvance",
   window.lastAdvance ?? ""
  );
-
-console.log("saveData end");
 
 }
 
