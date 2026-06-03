@@ -114,6 +114,9 @@ document.getElementById(
  "counter"
 ).innerHTML =
  "0 / 128";
+
+saveData();
+
 }
 
 function calculateTSV(){
@@ -750,6 +753,8 @@ document.getElementById(
 ).innerHTML =
  "0 / 128";
 
+saveData();
+
 }
 }
 
@@ -898,6 +903,8 @@ function showMotionList(){
 
 function clearAll(){
 
+  console.log("clearAll");
+
  if(
   !confirm(
    "本当にクリアしますか？"
@@ -921,12 +928,19 @@ function clearAll(){
  "候補数 : -";
 
  document.getElementById(
-  "currentStateResult"
- ).innerHTML = "";
-
- document.getElementById(
   "startS0"
  ).value = "";
+
+ document.getElementById(
+ "startS0"
+).value = "";
+
+console.log(
+ "startS0=",
+ document.getElementById(
+  "startS0"
+ ).value
+);
 
  document.getElementById(
   "startS1"
@@ -953,6 +967,11 @@ function clearAll(){
  document.getElementById(
  "consumeBody"
 ).innerHTML = "";
+
+delete window.rngS0;
+delete window.rngS1;
+
+sessionStorage.clear();
 
 }   
 
@@ -1103,6 +1122,278 @@ bitsInput.addEventListener(
  }
 );
 
+function saveData(){
 
+  console.log("saveData");
+
+ sessionStorage.setItem(
+  "bitsInput",
+  document.getElementById(
+   "bitsInput"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "startS0",
+  document.getElementById(
+   "startS0"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "startS1",
+  document.getElementById(
+   "startS1"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "currentS0",
+  document.getElementById(
+   "currentS0"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "currentS1",
+  document.getElementById(
+   "currentS1"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "rangeMin",
+  document.getElementById(
+   "rangeMin"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "rangeMax",
+  document.getElementById(
+   "rangeMax"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "targetAdvance",
+  document.getElementById(
+   "targetAdvance"
+  ).value
+ );
+
+ sessionStorage.setItem(
+  "consumeBody",
+  document.getElementById(
+   "consumeBody"
+  ).innerHTML
+ );
+
+ sessionStorage.setItem(
+ "counter",
+ document.getElementById(
+  "counter"
+ ).innerHTML
+);
+
+sessionStorage.setItem(
+ "currentResult",
+ document.getElementById(
+  "currentResult"
+ ).innerHTML
+);
+
+ sessionStorage.setItem(
+  "rngS0",
+  window.rngS0?.toString() || ""
+ );
+
+ sessionStorage.setItem(
+  "rngS1",
+  window.rngS1?.toString() || ""
+ );
+
+ sessionStorage.setItem(
+  "lastAdvance",
+  window.lastAdvance ?? ""
+ );
+
+console.log("saveData end");
+
+}
+
+function loadData(){
+
+ document.getElementById(
+  "bitsInput"
+ ).value =
+ sessionStorage.getItem(
+  "bitsInput"
+ ) || "";
+
+ document.getElementById(
+  "startS0"
+ ).value =
+ sessionStorage.getItem(
+  "startS0"
+ ) || "";
+
+ document.getElementById(
+  "startS1"
+ ).value =
+ sessionStorage.getItem(
+  "startS1"
+ ) || "";
+
+ document.getElementById(
+  "currentS0"
+ ).value =
+ sessionStorage.getItem(
+  "currentS0"
+ ) || "";
+
+ document.getElementById(
+  "currentS1"
+ ).value =
+ sessionStorage.getItem(
+  "currentS1"
+ ) || "";
+
+ document.getElementById(
+  "rangeMin"
+ ).value =
+ sessionStorage.getItem(
+  "rangeMin"
+ ) || "0";
+
+ document.getElementById(
+  "rangeMax"
+ ).value =
+ sessionStorage.getItem(
+  "rangeMax"
+ ) || "10000";
+
+ document.getElementById(
+  "targetAdvance"
+ ).value =
+ sessionStorage.getItem(
+  "targetAdvance"
+ ) || "";
+
+ document.getElementById(
+  "consumeBody"
+ ).innerHTML =
+ sessionStorage.getItem(
+  "consumeBody"
+ ) || "";
+
+ document.getElementById(
+ "counter"
+).innerHTML =
+ sessionStorage.getItem(
+  "counter"
+ ) || "0 / 128";
+
+document.getElementById(
+ "currentResult"
+).innerHTML =
+ sessionStorage.getItem(
+  "currentResult"
+ ) || "候補数 : -";
+
+ if(
+  sessionStorage.getItem(
+   "rngS0"
+  )
+ ){
+  window.rngS0 =
+   BigInt(
+    sessionStorage.getItem(
+     "rngS0"
+    )
+   );
+ }
+
+ if(
+  sessionStorage.getItem(
+   "rngS1"
+  )
+ ){
+  window.rngS1 =
+   BigInt(
+    sessionStorage.getItem(
+     "rngS1"
+    )
+   );
+ }
+
+ if(
+  sessionStorage.getItem(
+   "lastAdvance"
+  )
+ ){
+  window.lastAdvance =
+   parseInt(
+    sessionStorage.getItem(
+     "lastAdvance"
+    )
+   );
+ }
+
+}
+
+window.addEventListener(
+ "load",
+ loadData
+);
+
+document.getElementById(
+ "rangeMin"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "rangeMax"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "targetAdvance"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "bitsInput"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "rangeMax"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "targetAdvance"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "bitsInput"
+).addEventListener(
+ "input",
+ saveData
+);
 
 
