@@ -92,12 +92,12 @@ border-radius:20px;
 }
 
 input{
-width:90%;
-max-width:700px;
-padding:15px;
-font-size:20px;
-border:none;
-border-radius:10px;
+ width:90%;
+ max-width:700px;
+ padding:8px;
+ font-size:12px;
+ border:none;
+ border-radius:10px;
 }
 
 #counter,#result,#tsvResult{
