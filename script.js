@@ -628,11 +628,92 @@ if(
  return;
 }
 
+let canUseCache = false;
+
+if(
+ window.cachedCandidates !== null &&
+ text.length ===
+ window.cachedBits.length + 1 &&
+ text.startsWith(
+  window.cachedBits
+ )
+){
+ canUseCache = true;
+}
+
+if(canUseCache){
+
+}
+
 const targetBits =
  parseInt(text, 2);
 
 const mask =
  (1 << text.length) - 1;
+
+
+ let cacheCandidates = [];
+
+if(
+ window.useCandidateCache &&
+ canUseCache
+){
+
+ const nextBit =
+ Number(
+  text[text.length - 1]
+ );
+
+for(
+ let i = 0;
+ i <
+ window.cachedCandidates.length;
+ i++
+){
+
+ let c =
+  window.cachedCandidates[i];
+
+ let rngTest =
+  new Xoroshiro128p(
+   c.s0,
+   c.s1
+  );
+
+ let bit =
+  Number(
+   rngTest.getRandMax(2)
+  );
+
+ if(
+  bit === nextBit
+ ){
+
+  cacheCandidates.push({
+   frame:
+    c.frame + 1,
+   s0:
+    rngTest.s0,
+   s1:
+    rngTest.s1
+  });
+
+ }
+
+}
+
+}
+
+if(
+ window.useCandidateCache &&
+ canUseCache
+){
+
+ candidates =
+  cacheCandidates;
+
+}
+else{
 
 let windowBits = 0;
 
@@ -656,12 +737,18 @@ if(
  text.length - 1
 ){
 
- if(
-  windowBits ===
-  targetBits
- ){
-  candidates.push(k);
- }
+if(
+ windowBits ===
+ targetBits
+){
+
+ candidates.push({
+  frame:k,
+  s0:rng.s0,
+  s1:rng.s1
+ });
+
+}
 
 }
 
@@ -678,6 +765,13 @@ if(
 
 }
 }
+}
+
+window.cachedBits =
+ text;
+
+window.cachedCandidates =
+ [...candidates];
 
 document.getElementById(
  "currentResult"
@@ -686,12 +780,22 @@ document.getElementById(
 "候補数 : " +
 candidates.length;
 
-console.log(
- "calculateCurrent:",
- (performance.now() - start)
- .toFixed(1),
- "ms"
-);
+if(
+ candidates.length === 1
+){
+ currentResult.style.color =
+  "lime";
+}
+else if(
+ candidates.length === 0
+){
+ currentResult.style.color =
+  "red";
+}
+else{
+ currentResult.style.color =
+  "";
+}
 
 if(candidates.length === 1){
 
@@ -702,11 +806,11 @@ if(candidates.length === 1){
   );
 
 rng2.advance(
- candidates[0] + 1
+ candidates[0].frame + 1
 );
 
 let currentAdvance =
- candidates[0] + 1;
+ candidates[0].frame + 1;
 
 let targetAdvance =
  parseInt(
@@ -1089,29 +1193,7 @@ if(
  typeof window.rngS0 !==
  "undefined"
 ){
-
- clearTimeout(
-  autoCalcTimer
- );
-
- console.log(
- "計算予約"
-);
-
-autoCalcTimer =
- setTimeout(
-  ()=>{
-
-   console.log(
-    "calculateCurrent実行"
-   );
-
-   calculateCurrent();
-
-  },
-  200
- );
-
+ calculateCurrent();
 }
 
 }
@@ -1477,4 +1559,9 @@ function toggleSearchSection(){
 
 }
 
-let autoCalcTimer;
+window.cachedBits = "";
+window.cachedCandidates = null;
+
+window.useCandidateCache =
+ true;
+
