@@ -1744,12 +1744,6 @@ function generatePokemon(
  markCharm
 ){
 
-console.log(
- frame,
- shinyCharm,
- markCharm
-);
-
    const rng =
   new Xoroshiro128p(
    s0,
@@ -1973,6 +1967,226 @@ weight,
 
 }
 
+function generatePokemonFromRng(
+ rng,
+ frame,
+ shinyCharm,
+ markCharm
+){
+
+  // 日替わりシンボル
+rng.getRandMax(100);
+
+// slot固定
+const slot = 0;
+
+//   rng.getRandMax(0xFFFFFFFF);
+
+//rng.getRandMax(100);
+
+//rng.getRandMax(100);
+
+//const slot =
+ //Number(
+  //rng.getRandMax(100)
+ //);
+
+   const mark = ""
+ //genMark( rng,
+  //"曇り",
+  //false);
+
+  rng.getRandMax(1000);
+
+  rng.getRand();
+
+   const ability =0;
+ //Number(
+  //rng.getRandMax(8)
+ //);
+
+ const nature =
+  NATURES[
+   Number(
+    rng.getRandMax(25)
+   )
+  ];
+
+  const gender =
+ (
+  Number(
+   rng.getRandMax(2)
+  ) === 1
+ )
+ ? 0
+ : 1;
+
+const rawRand = rng.getRand();
+
+const localSeed =
+ Number(
+  rawRand &
+  0xFFFFFFFFn
+ );
+
+const localRng =
+ new Xoroshiro128p(
+  BigInt(localSeed),
+  9413281287807789659n
+ );
+
+
+const ec =
+ Number(
+  localRng.getRand() &
+  0xFFFFFFFFn
+ );
+
+ const tsv =
+ parseInt(
+  document.getElementById(
+   "tsv"
+  ).value
+ ) || 0;
+
+let pid =
+ Number(
+  localRng.getRand() &
+  0xFFFFFFFFn
+ );
+
+if(shinyCharm){
+
+ for(
+  let i = 0;
+  i < 2;
+  i++
+ ){
+
+  const testPid =
+   Number(
+    localRng.getRand() &
+    0xFFFFFFFFn
+   );
+
+  const testPsv =
+   (
+    (
+     (testPid >>> 16) ^
+     (testPid & 0xFFFF)
+    )
+   ) >>> 0;
+
+  if(
+   (testPsv ^ tsv) < 16
+  ){
+
+   pid = testPid;
+   break;
+
+  }
+
+ }
+
+}
+
+ const psv =
+ (
+  ((pid >>> 16) ^
+   (pid & 0xFFFF))
+ ) >>> 0;
+
+const shiny =
+ (
+  (psv ^ tsv) < 16
+ );
+
+let shinyType = 0;
+
+if(shiny){
+
+ const xor =
+  (
+   (pid >>> 16) ^
+   (pid & 0xFFFF) ^
+   tsv
+  );
+
+ if(xor > 0){
+
+  shinyType = 2;
+
+ }else{
+
+  shinyType = 1;
+
+ }
+
+}
+
+ const ivs = [];
+
+for(let i=0;i<6;i++){
+
+ ivs.push(
+  Number(
+   localRng.getRandMax(32)
+  )
+ );
+
+}
+
+const height =
+ Number(
+  localRng.getRandMax(129)
+ ) +
+ Number(
+  localRng.getRandMax(128)
+ );
+
+const weight =
+ Number(
+  localRng.getRandMax(129)
+ ) +
+ Number(
+  localRng.getRandMax(128)
+ );
+
+ const shinyMarkData =
+ genMark(
+  rng,
+  "曇り",
+  false
+ );
+
+ return {
+    frame,
+  slot,
+  nature,
+  ability,
+  gender,
+  ec,
+ pid,
+ localSeed,
+ shiny,
+ shinyType,
+ shinyMark:
+  shinyType === 1
+   ? "◆"
+   : shinyType === 2
+   ? "★"
+   : "",
+ ivs,
+ height,
+weight,
+  mark:
+  shinyMarkData !== ""
+   ? shinyMarkData
+   : mark
+ };
+
+}
+
 function generatePokemonList(
  s0,
  s1,
@@ -1982,23 +2196,32 @@ function generatePokemonList(
  markCharm
 ){
 
- const list = [];
+const list = [];
 
- for(
-  let i=0;
-  i<count;
-  i++
- ){
+const rng =
+ new Xoroshiro128p(
+  s0,
+  s1
+ );
 
-  list.push(
-   generatePokemon(
-    s0,
-    s1,
-    startFrame + i,
+rng.advance(
+ startFrame
+ );
+
+for(
+ let i=0;
+ i<count;
+ i++
+){
+
+list.push(
+ generatePokemonFromRng(
+  rng,
+  startFrame + i,
   shinyCharm,
   markCharm
-   )
-  );
+ )
+);
 
  }
 
@@ -2033,16 +2256,6 @@ const markCharm =
  document.getElementById(
   "markCharm"
  ).checked;
-
- console.log(
- "shinyCharm",
- shinyCharm
-);
-
-console.log(
- "markCharm",
- markCharm
-);
 
 const min =
  Number(
@@ -2269,8 +2482,6 @@ if(ivS !== ""){
   );
 
 }
-
- console.log(results);
 
 document.getElementById(
  "searchResult"
