@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>OWRNG Web</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+<button id="menuButton" onclick="toggleMenu()">☰</button>
+OWRNG Web
+</header>
+
+<div id="menu">
+<button onclick="showPage('seedPage')">Seed計算</button>
+<button onclick="showPage('tsvPage')">TSV計算</button>
+<button onclick="showPage('searchpage')">個体検索</button>
+</div>
+<div id="overlay"
+onclick="closeMenu()">
+</div>
+ 
+<div id="seedPage" class="page active">
+
+<textarea
+ id="bitsInput"
+ inputmode="numeric"
+ autocomplete="off"
+ autocorrect="off"
+ autocapitalize="off"
+ spellcheck="false"
+ oninput="checkAutoCalculate()">
+</textarea>
+
+<div class="statusBar">
+
+<div id="counter">
+    0 / 128
+</div>
+
+<div id="currentResult">
+候補数 : -
+</div>
+
+</div>
+
+<div class="bitButtons">
+<button onclick="appendBit('0')">物理(0)</button>
+<button onclick="appendBit('1')">特殊(1)</button>
+</div>
+
+<div class="topButtons">
+
+<button
+ class="actionButton"
+ onclick="calculate()">
+計算
+</button>
+
+<button class="actionButton"
+onclick="clearAll()">
+クリア
+</button>
+
+</div>
+
+<hr>
+
+<div class="stateArea">
+
+<div style="width:100%;">
+
+<h3
+ onclick="toggleStateSection()"
+ id="stateTitle"
+>
+▼ State
+</h3>
+
+<div id="stateSection">
+
+    <div class="stateBox">
+<h3>開始state</h3>
+
+<p>S0</p>
+<input id="startS0">
+
+<p>S1</p>
+<input id="startS1">
+</div>
+
+<div class="stateBox">
+<h3>現在state</h3>
+
+<p>S0</p>
+<input id="currentS0">
+
+<p>S1</p>
+<input id="currentS1">
+        
+</div> 
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div id="motionResult"></div>
+
+<h3
+ onclick="toggleSearchSection()"
+ id="searchTitle"
+>
+▼ 検索設定
+</h3>
+
+<div id="searchSection">
+
+<div class="searchArea">
+
+<div class="searchBox">
+
+<h3>検索範囲</h3>
+
+<div class="rangeRow">
+
+<input id="rangeMin" value="0">
+
+～
+
+<input id="rangeMax" value="10000">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="searchBox">
+
+<h3>目標個体消費数</h3>
+
+<input id="targetAdvance">
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+<div id="motionResult"></div>
+
+<table id="consumeTable">
+
+<tr>
+<th style="width:12%">No</th>
+<th style="width:18%">消費数</th>
+<th style="width:24%">合計消費数</th>
+<th style="width:45%">目標までの消費数</th>
+</tr>
+
+<tbody id="consumeBody">
+</tbody>
+
+</table>
+
+<div id="tsvPage" class="page">
+<h2>TSV計算</h2>
+<p>TID</p>
+<input id="tid">
+<p>SID</p>
+<input id="sid">
+<br>
+<button class="actionButton" onclick="calculateTSV()">TSV計算</button>
+<div id="tsvResult">結果がここに表示されます</div>
+</div>
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+TSV
+<input
+ id="tsv"
+ type="number"
+ value="0"
+ min="0"
+ max="4095"
+>
+

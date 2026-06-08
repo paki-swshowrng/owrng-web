@@ -18,6 +18,7 @@ OWRNG Web
 <div id="menu">
 <button onclick="showPage('seedPage')">Seed計算</button>
 <button onclick="showPage('tsvPage')">TSV計算</button>
+<button onclick="showPage('searchpage')">個体検索</button>
 </div>
 <div id="overlay"
 onclick="closeMenu()">
@@ -174,6 +175,8 @@ onclick="clearAll()">
 
 </table>
 
+</div>
+
 <div id="tsvPage" class="page">
 <h2>TSV計算</h2>
 <p>TID</p>
@@ -185,12 +188,9 @@ onclick="clearAll()">
 <div id="tsvResult">結果がここに表示されます</div>
 </div>
 
+<div id="searchpage" class="page">
 
-
-<script src="script.js"></script>
-
-</body>
-</html>
+<h2>個体検索</h2>
 
 TSV
 <input
@@ -200,3 +200,316 @@ TSV
  min="0"
  max="4095"
 >
+
+<p>
+<input
+ type="checkbox"
+ id="shinyCharm"
+>
+光るお守り
+</p>
+
+<p>
+<input
+ type="checkbox"
+ id="markCharm"
+>
+証のお守り
+</p>
+
+<p>S0</p>
+<input id="searchS0">
+
+<p>S1</p>
+<input id="searchS1">
+
+<p>検索範囲</p>
+
+<input id="searchRangeMin" value="0">
+
+～
+
+<input id="searchRangeMax" value="10000">
+
+<button onclick="searchPokemon()">
+個体検索
+</button>
+
+<p>特性</p>
+
+<select id="abilityFilter">
+<option value="">-</option>
+<option value="0">特性1</option>
+<option value="1">特性2</option>
+</select>
+
+<p>性別</p>
+
+<select id="genderFilter">
+
+<option value="">
+-
+</option>
+
+<option value="0">
+♂
+</option>
+
+<option value="1">
+♀
+</option>
+
+</select>
+
+<p>色違い</p>
+
+<select id="shinyFilter">
+
+<option value="">
+-
+</option>
+
+<option value="1">
+◆
+</option>
+
+<option value="2">
+★
+</option>
+
+<option value="3">
+◆/★
+</option>
+
+</select>
+
+<p>あかし</p>
+
+<select id="markFilter">
+
+<option value="">
+-
+</option>
+
+<option value="みたことのない">
+みたことのない
+</option>
+
+<option value="ときどきみる">
+ときどきみる
+</option>
+
+<option value="どんてん">
+どんてん
+</option>
+
+<option value="あめふり">
+あめふり
+</option>
+
+<option value="こうせつ">
+こうせつ
+</option>
+
+<option value="ごうせつ">
+ごうせつ
+</option>
+
+<option value="のうむ">
+のうむ
+</option>
+
+<option value="さじん">
+さじん
+</option>
+
+<option value="いかづち">
+いかづち
+</option>
+
+<option value="かんそう">
+かんそう
+</option>
+
+<option value="時間帯">
+時間帯
+</option>
+
+<option value="つりあげられた">
+つりあげられた
+</option>
+
+<option value="わんぱく">
+わんぱく
+</option>
+
+<option value="のうてんき">
+のうてんき
+</option>
+
+<option value="きんちょう">
+きんちょう
+</option>
+
+<option value="きたい">
+きたい
+</option>
+
+<option value="カリスマ">
+カリスマ
+</option>
+
+<option value="れいせい">
+れいせい
+</option>
+
+<option value="じょうねつ">
+じょうねつ
+</option>
+
+<option value="ゆだん">
+ゆだん
+</option>
+
+<option value="たこう">
+たこう
+</option>
+
+<option value="ふんぬ">
+ふんぬ
+</option>
+
+<option value="びしょう">
+びしょう
+</option>
+
+<option value="ひそう">
+ひそう
+</option>
+
+<option value="かいちょう">
+かいちょう
+</option>
+
+<option value="げきはつ">
+げきはつ
+</option>
+
+<option value="りせい">
+りせい
+</option>
+
+<option value="ほんのう">
+ほんのう
+</option>
+
+<option value="こうかつ">
+こうかつ
+</option>
+
+<option value="こわもて">
+こわもて
+</option>
+
+<option value="やさがた">
+やさがた
+</option>
+
+<option value="どうよう">
+どうよう
+</option>
+
+<option value="こうよう">
+こうよう
+</option>
+
+<option value="けんたい">
+けんたい
+</option>
+
+<option value="じしん">
+じしん
+</option>
+
+<option value="ふしん">
+ふしん
+</option>
+
+<option value="ぼくとつ">
+ぼくとつ
+</option>
+
+<option value="ふじゅん">
+ふじゅん
+</option>
+
+<option value="げんき">
+げんき
+</option>
+
+<option value="ふちょう">
+ふちょう
+</option>
+
+</select>
+
+<p>個体値</p>
+
+H <input id="ivH" value="">
+A <input id="ivA" value="">
+B <input id="ivB" value="">
+C <input id="ivC" value="">
+D <input id="ivD" value="">
+S <input id="ivS" value="">
+
+<div id="searchResult"></div>
+
+<p>性格</p>
+
+<select id="natureFilter">
+
+<option value="">-</option>
+
+<option value="さみしがり">さみしがり</option>
+<option value="いじっぱり">いじっぱり</option>
+<option value="やんちゃ">やんちゃ</option>
+<option value="ゆうかん">ゆうかん</option>
+
+<option value="ずぶとい">ずぶとい</option>
+<option value="わんぱく">わんぱく</option>
+<option value="のうてんき">のうてんき</option>
+<option value="のんき">のんき</option>
+
+<option value="ひかえめ">ひかえめ</option>
+<option value="おっとり">おっとり</option>
+<option value="うっかりや">うっかりや</option>
+<option value="れいせい">れいせい</option>
+
+<option value="おだやか">おだやか</option>
+<option value="おとなしい">おとなしい</option>
+<option value="しんちょう">しんちょう</option>
+<option value="なまいき">なまいき</option>
+
+<option value="おくびょう">おくびょう</option>
+<option value="せっかち">せっかち</option>
+<option value="ようき">ようき</option>
+<option value="むじゃき">むじゃき</option>
+
+<option value="てれや">てれや</option>
+<option value="がんばりや">がんばりや</option>
+<option value="すなお">すなお</option>
+<option value="きまぐれ">きまぐれ</option>
+<option value="まじめ">まじめ</option>
+
+</select>
+
+</select>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+

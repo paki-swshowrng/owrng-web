@@ -28,10 +28,19 @@ function toggleMenu(){
 }
  
 function showPage(id){
- seedPage.classList.remove("active");
- tsvPage.classList.remove("active");
- document.getElementById(id).classList.add("active");
+
+ document
+  .querySelectorAll(".page")
+  .forEach(page =>
+   page.classList.remove("active")
+  );
+
+ document
+  .getElementById(id)
+  .classList.add("active");
+
  closeMenu();
+
 }
 
 function getBits(){
@@ -1730,8 +1739,16 @@ if(
 function generatePokemon(
  s0,
  s1,
- frame
+ frame,
+ shinyCharm,
+ markCharm
 ){
+
+console.log(
+ frame,
+ shinyCharm,
+ markCharm
+);
 
    const rng =
   new Xoroshiro128p(
@@ -1811,18 +1828,53 @@ const ec =
   0xFFFFFFFFn
  );
 
-const pid =
- Number(
-  localRng.getRand() &
-  0xFFFFFFFFn
- );
-
-   const tsv =
+ const tsv =
  parseInt(
   document.getElementById(
    "tsv"
   ).value
  ) || 0;
+
+let pid =
+ Number(
+  localRng.getRand() &
+  0xFFFFFFFFn
+ );
+
+if(shinyCharm){
+
+ for(
+  let i = 0;
+  i < 2;
+  i++
+ ){
+
+  const testPid =
+   Number(
+    localRng.getRand() &
+    0xFFFFFFFFn
+   );
+
+  const testPsv =
+   (
+    (
+     (testPid >>> 16) ^
+     (testPid & 0xFFFF)
+    )
+   ) >>> 0;
+
+  if(
+   (testPsv ^ tsv) < 16
+  ){
+
+   pid = testPid;
+   break;
+
+  }
+
+ }
+
+}
 
  const psv =
  (
@@ -1925,7 +1977,9 @@ function generatePokemonList(
  s0,
  s1,
  startFrame,
- count
+ count,
+ shinyCharm,
+ markCharm
 ){
 
  const list = [];
@@ -1940,7 +1994,9 @@ function generatePokemonList(
    generatePokemon(
     s0,
     s1,
-    startFrame + i
+    startFrame + i,
+  shinyCharm,
+  markCharm
    )
   );
 
@@ -1949,3 +2005,358 @@ function generatePokemonList(
  return list;
 
 }
+
+function searchPokemon(){
+
+ const s0 =
+  BigInt(
+   "0x" +
+   document.getElementById(
+    "searchS0"
+   ).value
+  );
+
+ const s1 =
+  BigInt(
+   "0x" +
+   document.getElementById(
+    "searchS1"
+   ).value
+  );
+
+  const shinyCharm =
+ document.getElementById(
+  "shinyCharm"
+ ).checked;
+
+const markCharm =
+ document.getElementById(
+  "markCharm"
+ ).checked;
+
+ console.log(
+ "shinyCharm",
+ shinyCharm
+);
+
+console.log(
+ "markCharm",
+ markCharm
+);
+
+const min =
+ Number(
+  document.getElementById(
+   "searchRangeMin"
+  ).value
+ );
+
+const max =
+ Number(
+  document.getElementById(
+   "searchRangeMax"
+  ).value
+ );
+
+const results =
+ generatePokemonList(
+  s0,
+  s1,
+  min,
+　max,
+  shinyCharm,
+  markCharm
+ );
+
+ const natureFilter =
+ document.getElementById(
+  "natureFilter"
+ ).value;
+
+let filtered =
+ results;
+
+if(natureFilter !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.nature ===
+   natureFilter
+  );
+
+}
+
+const abilityFilter =
+ document.getElementById(
+  "abilityFilter"
+ ).value;
+
+ if(abilityFilter !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ability ==
+   abilityFilter
+  );
+
+}
+
+const genderFilter =
+ document.getElementById(
+  "genderFilter"
+ ).value;
+
+if(genderFilter !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.gender ==
+   genderFilter
+  );
+
+}
+
+const shinyFilter =
+ document.getElementById(
+  "shinyFilter"
+ ).value;
+
+if(shinyFilter === "1"){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.shinyType === 1
+  );
+
+}
+
+else if(
+ shinyFilter === "2"
+){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.shinyType === 2
+  );
+
+}
+
+else if(
+ shinyFilter === "3"
+){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.shinyType > 0
+  );
+
+}
+
+const markFilter =
+ document.getElementById(
+  "markFilter"
+ ).value;
+
+if(markFilter !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.mark ===
+   markFilter
+  );
+
+}
+
+const ivH =
+ document.getElementById(
+  "ivH"
+ ).value;
+
+if(ivH !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ivs[0] ==
+   Number(ivH)
+  );
+
+}
+
+const ivA =
+ document.getElementById(
+  "ivA"
+ ).value;
+
+if(ivA !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ivs[1] ==
+   Number(ivA)
+  );
+
+}
+
+const ivB =
+ document.getElementById(
+  "ivB"
+ ).value;
+
+if(ivB !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ivs[2] ==
+   Number(ivB)
+  );
+
+}
+
+const ivC =
+ document.getElementById(
+  "ivC"
+ ).value;
+
+if(ivC !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ivs[3] ==
+   Number(ivC)
+  );
+
+}
+
+const ivD =
+ document.getElementById(
+  "ivD"
+ ).value;
+
+if(ivD !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ivs[4] ==
+   Number(ivD)
+  );
+
+}
+
+const ivS =
+ document.getElementById(
+  "ivS"
+ ).value;
+
+if(ivS !== ""){
+
+ filtered =
+  filtered.filter(
+   p =>
+   p.ivs[5] ==
+   Number(ivS)
+  );
+
+}
+
+ console.log(results);
+
+document.getElementById(
+ "searchResult"
+).innerHTML =
+ JSON.stringify(
+  results,
+  null,
+  2
+ );
+
+ let html =
+ "<table border='1'>";
+
+html += `
+<tr>
+<th>F</th>
+<th>色</th>
+<th>性格</th>
+<th>特性</th>
+<th>性別</th>
+<th>H</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>S</th>
+<th>PID</th>
+<th>EC</th>
+<th>証</th>
+</tr>
+`;
+
+for(const p of filtered){
+
+ html += `
+ <tr>
+
+ <td>${p.frame}</td>
+
+ <td>${
+  p.shinyType === 1
+   ? "◆"
+   : p.shinyType === 2
+   ? "★"
+   : ""
+ }</td>
+
+ <td>${p.nature}</td>
+
+ <td>${p.ability}</td>
+
+ <td>${
+  p.gender === 0
+   ? "♂"
+   : "♀"
+ }</td>
+
+ <td>${p.ivs[0]}</td>
+ <td>${p.ivs[1]}</td>
+ <td>${p.ivs[2]}</td>
+ <td>${p.ivs[3]}</td>
+ <td>${p.ivs[4]}</td>
+ <td>${p.ivs[5]}</td>
+
+ <td>${p.pid
+  .toString(16)
+  .toUpperCase()
+ }</td>
+
+ <td>${p.ec
+  .toString(16)
+  .toUpperCase()
+ }</td>
+
+ <td>${p.mark}</td>
+
+ </tr>
+ `;
+}
+
+html += "</table>";
+
+document.getElementById(
+ "searchResult"
+).innerHTML = html;
+
+}
+
+
