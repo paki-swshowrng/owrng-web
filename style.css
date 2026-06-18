@@ -273,85 +273,35 @@ white-space:nowrap
 }
 
 .pokemonCard{
- width: 100%;   
- border-bottom:1px dashed #666;
- padding:12px 0;
- box-sizing: border-box;
+    border-bottom:1px dashed #666;
+    padding:12px 0;
 
- display: flex;
- flex-direction: column;
- gap: 6px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
 }
 
-.speciesLine,
-.abilityLine{
-    color:#666;
+.frameRow{
+    font-weight:bold;
 }
 
 .nameRow{
     display:flex;
-    align-items:flex-end;
-    gap:30px;
+    gap:20px;
 }
 
-.middleRow{
+.ivRow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.extraRow{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    margin-top:8px;
-}
-
-.bottomRow{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 50px;
-}
-
-.speciesArea{
-    min-width:180px;
-}
-
-.natureArea{
-    min-width:80px;
-}
-
-.shinyArea{
-    min-width:40px;
-    text-align:center;
-}
-
-.markArea{
-    min-width:140px;
-    text-align:center;
-}
-
-.abilityArea{
-    min-width:140px;
-    text-align:center;
 }
 
 @media (max-width:768px){
-
-    .speciesArea{
-        min-width:90px;
-    }
-
-    .natureArea{
-        min-width:60px;
-    }
-
-    .shinyArea{
-        min-width:20px;
-    }
-
-    .markArea{
-        min-width:80px;
-    }
-
-    .abilityArea{
-        min-width:80px;
-    }
 
     .nameRow{
         gap:10px;

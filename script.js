@@ -2319,59 +2319,47 @@ html += `
 
 <div class="pokemonCard">
 
-  <div class="nameRow">
-
-    <div class="speciesArea">
-      <div>[種族名]</div>
+    <div class="frameRow">
+        ${p.frame}F :
     </div>
 
-    <div class="natureArea">
-      ${p.nature}
+    <div class="nameRow">
+        <span class="speciesName">[種族名]</span>
+        <span class="natureName">${p.nature}</span>
     </div>
 
-    <div class="shinyArea">
-      ${
-        p.shinyType === 1
-        ? "◆"
-        : p.shinyType === 2
-        ? "★"
-        : ""
-      }
+    <div class="ivRow">
+        <span>
+            ${p.gender === 0 ? "♂" : "♀"}
+        </span>
+
+        <span>
+            ${p.ivs.join("-")}
+        </span>
+
+        <span>
+            Lv
+        </span>
     </div>
 
-    <div class="markArea">
-      ${p.mark}
-    </div>
+    <div class="extraRow">
+
+        <span>
+            ${
+                p.shinyType === 1
+                ? "◆ "
+                : p.shinyType === 2
+                ? "★ "
+                : ""
+            }
+            ${p.mark}
+        </span>
+
+        <span>
+            特性${p.ability}
+        </span>
 
     </div>
-
-<div class="middleRow">
-
-   <div class="frameArea"> 
-    ${p.frame}F :
-   </div>
-
-    <div class="abilityArea">
-      特性${p.ability}
-    </div>
-
-  </div>
-
-  <div class="bottomRow">
-
-    <span class="genderArea">
-      ${p.gender === 0 ? "♂" : "♀"}
-    </span>
-
-    <span class="ivArea">
-      ${p.ivs.join("-")}
-    </span>
-
-    <span class="lvArea">
-    Lv
-    </span>
-
-  </div>
 
 </div>
 
