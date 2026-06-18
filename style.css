@@ -235,7 +235,7 @@ h3{
  display:flex;
  justify-content:center;
  align-items:flex-start;
- gap:80px;
+ gap:20px;
 }
 
 .ivColumn{
@@ -249,12 +249,12 @@ h3{
 }
 
 .ivColumn input{
-width:50px;
-height:30px;
+width:36px;
+
 }   
 
 .filterColumn select{
-    width:180px;
+    width:120px;
 }
 
 .filterColumn p{
