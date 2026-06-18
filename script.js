@@ -895,78 +895,6 @@ saveData();
 }
 }
 
- function showMotionList(){
-
- let rangeMin =
- parseInt(
-  document.getElementById(
-   "rangeMin"
-  ).value
- );
-
- let rangeMax =
- parseInt(
-  document.getElementById(
-   "rangeMax"
-  ).value
- );
-
- let rng =
- new Xoroshiro128p(
-  window.rngS0,
-  window.rngS1
- );
-
- rng.advance(rangeMin);
-
- let html =
- "<table border='1'>" +
- "<tr>" +
- "<th>F</th>" +
- "<th>Motion</th>" +
- "<th>S0</th>" +
- "<th>S1</th>" +
- "</tr>";
-
- let motion = "-";
-
- for(
-  let f=rangeMin;
-  f<=rangeMax;
-  f++
- ){
-
-  html +=
-  "<tr>" +
-  "<td>"+f+"</td>" +
-  "<td>"+motion+"</td>" +
-  "<td>"+
-   rng.s0
-   .toString(16)
-   .toUpperCase()
-   .padStart(16,"0")+
-  "</td>" +
-  "<td>"+
-   rng.s1
-   .toString(16)
-   .toUpperCase()
-   .padStart(16,"0")+
-  "</td>" +
-  "</tr>";
-
-  motion =
-   rng.getRandMax(2)
-   .toString();
-
- }
-
- html += "</table>";
-
- document.getElementById(
-  "motionResult"
- ).innerHTML = html;
-}
-
 function showMotionList(){
 
  let rangeMin =
@@ -1647,43 +1575,51 @@ function genMark(
  isFishing
 ){
 
- let flag =
-  rng.getRandMax(1000);
+const flag =
+ rng.getRandMax(1000);
+
+const rare =
+ rng.getRandMax(100);
+
+const uncommon =
+ rng.getRandMax(50);
+
+const weatherRoll =
+ rng.getRandMax(50);
+
+const timeRoll =
+ rng.getRandMax(50);
+
+const fishingRoll =
+ rng.getRandMax(25);
 
  if(flag === 0n){
   return "みたことのない";
  }
 
- let rare =
-  rng.getRandMax(100);
-
 if(rare === 0n){
 
- return MARK_LISTS[
-  Number(
-   rng.getRandMax(
-    MARK_LISTS.length
-   )
+const idx =
+ Number(
+  rng.getRandMax(
+   MARK_LISTS.length
   )
- ];
+ );
+
+console.log(
+ "MARK IDX",
+ idx,
+ MARK_LISTS[idx]
+ );
+
+return MARK_LISTS[idx];
 
 }
 
- let uncommon =
-  rng.getRandMax(50);
 
  if(uncommon === 0n){
   return "ときどきみる";
  }
-
-let weatherRoll =
- rng.getRandMax(50);
-
-let timeRoll =
- rng.getRandMax(50);
-
-let fishingRoll =
- rng.getRandMax(25);
 
  if(
  weatherRoll === 0n &&
@@ -1736,26 +1672,186 @@ if(
 
 }
 
-function generatePokemon(
- s0,
- s1,
- frame,
- shinyCharm,
- markCharm
+function matchFilter(
+ p,
+ filters
 ){
 
-   const rng =
+console.log(
+ "filter",
+ filters.shiny
+);  
+
+ if(
+  filters.gender !== "" &&
+  p.gender.toString() !==
+  filters.gender
+ ){
+  return false;
+ }
+
+ if(
+  filters.nature !== "" &&
+  p.nature !==
+  filters.nature
+ ){
+  return false;
+ }
+
+ if(
+  filters.shiny === "1" &&
+  !p.shiny
+ ){
+  return false;
+ }
+
+ if(
+  filters.shiny === "2" &&
+  p.shinyType !== 1
+ ){
+  return false;
+ }
+
+ if(
+  filters.shiny === "3" &&
+  p.shinyType !== 2
+ ){
+  return false;
+ }
+
+ if(
+  filters.mark !== "" &&
+  p.mark !==
+  filters.mark
+ ){
+  return false;
+ }
+
+ const ivChecks = [
+ [0, filters.ivHMin, filters.ivHMax],
+ [1, filters.ivAMin, filters.ivAMax],
+ [2, filters.ivBMin, filters.ivBMax],
+ [3, filters.ivCMin, filters.ivCMax],
+ [4, filters.ivDMin, filters.ivDMax],
+ [5, filters.ivSMin, filters.ivSMax]
+];
+
+for(const [idx, min, max] of ivChecks){
+
+ if(
+  p.ivs[idx] < Number(min) ||
+  p.ivs[idx] > Number(max)
+ ){
+  return false;
+ }
+
+}
+
+ return true;
+
+}
+
+
+
+function generatePokemonListFast(
+ s0,
+ s1,
+ startFrame,
+ count,
+ shinyCharm,
+ markCharm,
+ filters,
+ tsv
+){
+
+// NX一致版 2026-06-12
+
+const localRng =
+ new Xoroshiro128p(
+  0n,
+  0n
+ );
+
+ const list = [];
+
+ const rng =
   new Xoroshiro128p(
    s0,
    s1
   );
 
-  
+ rng.advance(
+  startFrame
+ );
 
-rng.advance(frame);
+for(
+ let i=0;
+ i<count;
+ i++
+){
+
+const p =
+ generatePokemonFromCurrentSeed(
+  rng,
+  startFrame + i,
+  shinyCharm,
+  markCharm,
+  tsv,
+  localRng
+ );
+
+ 
+rng.getRand(2);
+
+if(
+ !matchFilter(
+  p,
+  filters
+ )
+){
+ continue;
+}
+
+list.push(p);
+
+
+ }
+
+console.log(
+ "results",
+ list.length
+);
+
+ return list;
+
+}
+
+function generatePokemonFromCurrentSeed(
+ rng,
+ frame,
+ shinyCharm,
+ markCharm,
+ tsv
+){
+
+console.log("frame", frame);
+
+console.log(
+ "seed",
+ rng.s0.toString(16),
+ rng.s1.toString(16)
+);
+
+const workRng =
+ new Xoroshiro128p(
+  rng.s0,
+  rng.s1
+ );
+
+let totalConsume = 0;
 
 // 日替わりシンボル
-rng.getRandMax(100);
+workRng.getRandMax(100);
 
 // slot固定
 const slot = 0;
@@ -1776,32 +1872,92 @@ const slot = 0;
   //"曇り",
   //false);
 
-  rng.getRandMax(1000);
+  //workRng.getRandMax(1000);
 
-  rng.getRand();
+  //workRng.getRand();
 
-   const ability =0;
- //Number(
-  //rng.getRandMax(8)
- //);
+const shinyRolls =
+ shinyCharm ? 3 : 1;
+
+ let shiny = false;
+
+for(let i=0;i<shinyRolls;i++){
+
+console.log("inside for");
+
+ const num4 =
+  Number(
+   workRng.getRand() &
+   0xFFFFFFFFn
+  );
+
+  const roll =
+ (
+  (
+   (
+    num4 ^
+    (num4 >>> 16)
+   ) & 0xFFFF
+  ) >>> 4
+ );
+
+ if(
+  (
+   (
+    (
+     (    
+     num4 ^
+     (num4 >>> 16)
+    ) & 0xFFFF
+   ) >>> 4
+  ) ^
+  tsv
+  ) === 0
+ ){
+  shiny = true;
+  break;
+ }
+
+}
+
+const genderRoll =
+ Number(
+  workRng.getRandMax(8)
+ );
 
  const nature =
   NATURES[
    Number(
-    rng.getRandMax(25)
+    workRng.getRandMax(25)
    )
   ];
 
-  const gender =
+ // const gender =
+ //(
+  //Number(
+   //workRng.getRandMax(2)
+  //) === 1
+ //)
+ //? 0
+ //: 1;
+
+ const gender =
  (
-  Number(
-   rng.getRandMax(2)
-  ) === 1
- )
+  genderRoll & 1
+ ) === 1 
  ? 0
  : 1;
 
-const rawRand = rng.getRand();
+   const ability =
+   (
+    Number(
+      workRng.getRandMax(2)
+    ) === 1
+   )
+   ? 0
+   : 1; 
+
+const rawRand = workRng.getRand();
 
 const localSeed =
  Number(
@@ -1816,18 +1972,12 @@ const localRng =
  );
 
 
+
 const ec =
  Number(
   localRng.getRand() &
   0xFFFFFFFFn
  );
-
- const tsv =
- parseInt(
-  document.getElementById(
-   "tsv"
-  ).value
- ) || 0;
 
 let pid =
  Number(
@@ -1835,40 +1985,40 @@ let pid =
   0xFFFFFFFFn
  );
 
-if(shinyCharm){
+//if(shinyCharm){
 
- for(
-  let i = 0;
-  i < 2;
-  i++
- ){
+// for(
+//  let i = 0;
+//  i < 2;
+//  i++
+// ){
 
-  const testPid =
-   Number(
-    localRng.getRand() &
-    0xFFFFFFFFn
-   );
+//  const testPid =
+//   Number(
+//    localRng.getRand() &
+//    0xFFFFFFFFn
+//   );
 
-  const testPsv =
-   (
-    (
-     (testPid >>> 16) ^
-     (testPid & 0xFFFF)
-    )
-   ) >>> 0;
+//  const testPsv =
+//   (
+//    (
+//     (testPid >>> 16) ^
+//     (testPid & 0xFFFF)
+//    )
+//   ) >>> 0;
 
-  if(
-   (testPsv ^ tsv) < 16
-  ){
+//  if(
+//   (testPsv ^ tsv) < 16
+//  ){
 
-   pid = testPid;
-   break;
+//  pid = testPid;
+//   break;
 
-  }
+//  }
 
- }
+// }
 
-}
+//}
 
  const psv =
  (
@@ -1876,23 +2026,32 @@ if(shinyCharm){
    (pid & 0xFFFF))
  ) >>> 0;
 
-const shiny =
- (
-  (psv ^ tsv) < 16
- );
-
 let shinyType = 0;
+
+const xor =
+ (
+  (pid >>> 16) ^
+  (pid & 0xFFFF) ^
+  tsv
+ ) >>> 0;
 
 if(shiny){
 
- const xor =
-  (
-   (pid >>> 16) ^
-   (pid & 0xFFFF) ^
-   tsv
-  );
+ if(xor >= 16){
 
- if(xor > 0){
+  pid =
+   (
+    (
+     (tsv ^
+      (pid & 0xFFFF)
+     ) << 16
+    ) |
+    (pid & 0xFFFF)
+   ) >>> 0;
+
+  shinyType = 1;
+
+ }else if(xor > 0){
 
   shinyType = 2;
 
@@ -1902,42 +2061,58 @@ if(shiny){
 
  }
 
-}
+}else if(xor < 16){
 
- const ivs = [];
-
-for(let i=0;i<6;i++){
-
- ivs.push(
-  Number(
-   localRng.getRandMax(32)
-  )
- );
+ pid =
+  (pid ^ 0x10000000)
+  >>> 0;
 
 }
 
-const height =
- Number(
+const ivs = [
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32))
+];
+
+const height = 
+Number(
   localRng.getRandMax(129)
  ) +
  Number(
   localRng.getRandMax(128)
  );
 
-const weight =
- Number(
+const weight = 
+Number(
   localRng.getRandMax(129)
  ) +
  Number(
   localRng.getRandMax(128)
  );
+
+console.log(
+ "MARK RNG",
+ workRng.s0.toString(16),
+ workRng.s1.toString(16)
+); 
 
  const shinyMarkData =
  genMark(
-  rng,
+  workRng,
   "曇り",
   false
  );
+
+if(shiny){
+ console.log(
+  "SHINY RETURN",
+  frame
+ );
+} 
 
  return {
   frame,
@@ -1964,268 +2139,6 @@ weight,
    ? shinyMarkData
    : mark
  };
-
-}
-
-function generatePokemonFromRng(
- rng,
- frame,
- shinyCharm,
- markCharm
-){
-
-  // 日替わりシンボル
-rng.getRandMax(100);
-
-// slot固定
-const slot = 0;
-
-//   rng.getRandMax(0xFFFFFFFF);
-
-//rng.getRandMax(100);
-
-//rng.getRandMax(100);
-
-//const slot =
- //Number(
-  //rng.getRandMax(100)
- //);
-
-   const mark = ""
- //genMark( rng,
-  //"曇り",
-  //false);
-
-  rng.getRandMax(1000);
-
-  rng.getRand();
-
-   const ability =0;
- //Number(
-  //rng.getRandMax(8)
- //);
-
- const nature =
-  NATURES[
-   Number(
-    rng.getRandMax(25)
-   )
-  ];
-
-  const gender =
- (
-  Number(
-   rng.getRandMax(2)
-  ) === 1
- )
- ? 0
- : 1;
-
-const rawRand = rng.getRand();
-
-const localSeed =
- Number(
-  rawRand &
-  0xFFFFFFFFn
- );
-
-const localRng =
- new Xoroshiro128p(
-  BigInt(localSeed),
-  9413281287807789659n
- );
-
-
-const ec =
- Number(
-  localRng.getRand() &
-  0xFFFFFFFFn
- );
-
- const tsv =
- parseInt(
-  document.getElementById(
-   "tsv"
-  ).value
- ) || 0;
-
-let pid =
- Number(
-  localRng.getRand() &
-  0xFFFFFFFFn
- );
-
-if(shinyCharm){
-
- for(
-  let i = 0;
-  i < 2;
-  i++
- ){
-
-  const testPid =
-   Number(
-    localRng.getRand() &
-    0xFFFFFFFFn
-   );
-
-  const testPsv =
-   (
-    (
-     (testPid >>> 16) ^
-     (testPid & 0xFFFF)
-    )
-   ) >>> 0;
-
-  if(
-   (testPsv ^ tsv) < 16
-  ){
-
-   pid = testPid;
-   break;
-
-  }
-
- }
-
-}
-
- const psv =
- (
-  ((pid >>> 16) ^
-   (pid & 0xFFFF))
- ) >>> 0;
-
-const shiny =
- (
-  (psv ^ tsv) < 16
- );
-
-let shinyType = 0;
-
-if(shiny){
-
- const xor =
-  (
-   (pid >>> 16) ^
-   (pid & 0xFFFF) ^
-   tsv
-  );
-
- if(xor > 0){
-
-  shinyType = 2;
-
- }else{
-
-  shinyType = 1;
-
- }
-
-}
-
- const ivs = [];
-
-for(let i=0;i<6;i++){
-
- ivs.push(
-  Number(
-   localRng.getRandMax(32)
-  )
- );
-
-}
-
-const height =
- Number(
-  localRng.getRandMax(129)
- ) +
- Number(
-  localRng.getRandMax(128)
- );
-
-const weight =
- Number(
-  localRng.getRandMax(129)
- ) +
- Number(
-  localRng.getRandMax(128)
- );
-
- const shinyMarkData =
- genMark(
-  rng,
-  "曇り",
-  false
- );
-
- return {
-    frame,
-  slot,
-  nature,
-  ability,
-  gender,
-  ec,
- pid,
- localSeed,
- shiny,
- shinyType,
- shinyMark:
-  shinyType === 1
-   ? "◆"
-   : shinyType === 2
-   ? "★"
-   : "",
- ivs,
- height,
-weight,
-  mark:
-  shinyMarkData !== ""
-   ? shinyMarkData
-   : mark
- };
-
-}
-
-function generatePokemonList(
- s0,
- s1,
- startFrame,
- count,
- shinyCharm,
- markCharm
-){
-
-const list = [];
-
-const rng =
- new Xoroshiro128p(
-  s0,
-  s1
- );
-
-rng.advance(
- startFrame
- );
-
-for(
- let i=0;
- i<count;
- i++
-){
-
-list.push(
- generatePokemonFromRng(
-  rng,
-  startFrame + i,
-  shinyCharm,
-  markCharm
- )
-);
-
- }
-
- return list;
 
 }
 
@@ -2271,298 +2184,202 @@ const max =
   ).value
  );
 
+const filters = {
+
+ nature:
+ document.getElementById(
+  "natureFilter"
+ ).value,
+
+ ability:
+ document.getElementById(
+  "abilityFilter"
+ ).value,
+
+ gender:
+ document.getElementById(
+  "genderFilter"
+ ).value,
+
+ shiny:
+ document.getElementById(
+  "shinyFilter"
+ ).value,
+
+ mark:
+ document.getElementById(
+  "markFilter"
+ ).value,
+
+ ivHMin:
+ document.getElementById(
+  "ivHMin"
+ ).value,
+
+ivHMax:
+ document.getElementById(
+  "ivHMax"
+ ).value,
+
+ivAMin:
+ document.getElementById(
+  "ivAMin"
+ ).value,
+
+ivAMax:
+ document.getElementById(
+  "ivAMax"
+ ).value,
+
+ivBMin:
+ document.getElementById(
+  "ivBMin"
+ ).value,
+
+ivBMax:
+ document.getElementById(
+  "ivBMax"
+ ).value,
+
+ivCMin:
+ document.getElementById(
+  "ivCMin"
+ ).value,
+
+ivCMax:
+ document.getElementById(
+  "ivCMax"
+ ).value,
+
+ivDMin:
+ document.getElementById(
+  "ivDMin"
+ ).value,
+
+ivDMax:
+ document.getElementById(
+  "ivDMax"
+ ).value,
+
+ivSMin:
+ document.getElementById(
+  "ivSMin"
+ ).value,
+
+ivSMax:
+ document.getElementById(
+  "ivSMax"
+ ).value
+
+};
+
+const tsv =
+ parseInt(
+  document.getElementById(
+   "tsv"
+  ).value
+ ) || 0;
+
 const results =
- generatePokemonList(
+ generatePokemonListFast(
   s0,
   s1,
   min,
 　max,
   shinyCharm,
-  markCharm
+  markCharm,
+  filters,
+  tsv
  );
 
- const natureFilter =
- document.getElementById(
-  "natureFilter"
- ).value;
+ let html = "";
 
-let filtered =
- results;
+//html += `
+//<tr>
+//<th>F</th>
+//<th>色</th>
+//<th>性格</th>
+//<th>特性</th>
+//<th>性別</th>
+//<th>H</th>
+//<th>A</th>
+//<th>B</th>
+//<th>C</th>
+//<th>D</th>
+//<th>S</th>
+//<th>PID</th>
+//<th>EC</th>
+//<th>証</th>
+//</tr>
+//`;
 
-if(natureFilter !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.nature ===
-   natureFilter
-  );
-
-}
-
-const abilityFilter =
- document.getElementById(
-  "abilityFilter"
- ).value;
-
- if(abilityFilter !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ability ==
-   abilityFilter
-  );
-
-}
-
-const genderFilter =
- document.getElementById(
-  "genderFilter"
- ).value;
-
-if(genderFilter !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.gender ==
-   genderFilter
-  );
-
-}
-
-const shinyFilter =
- document.getElementById(
-  "shinyFilter"
- ).value;
-
-if(shinyFilter === "1"){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.shinyType === 1
-  );
-
-}
-
-else if(
- shinyFilter === "2"
-){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.shinyType === 2
-  );
-
-}
-
-else if(
- shinyFilter === "3"
-){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.shinyType > 0
-  );
-
-}
-
-const markFilter =
- document.getElementById(
-  "markFilter"
- ).value;
-
-if(markFilter !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.mark ===
-   markFilter
-  );
-
-}
-
-const ivH =
- document.getElementById(
-  "ivH"
- ).value;
-
-if(ivH !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ivs[0] ==
-   Number(ivH)
-  );
-
-}
-
-const ivA =
- document.getElementById(
-  "ivA"
- ).value;
-
-if(ivA !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ivs[1] ==
-   Number(ivA)
-  );
-
-}
-
-const ivB =
- document.getElementById(
-  "ivB"
- ).value;
-
-if(ivB !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ivs[2] ==
-   Number(ivB)
-  );
-
-}
-
-const ivC =
- document.getElementById(
-  "ivC"
- ).value;
-
-if(ivC !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ivs[3] ==
-   Number(ivC)
-  );
-
-}
-
-const ivD =
- document.getElementById(
-  "ivD"
- ).value;
-
-if(ivD !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ivs[4] ==
-   Number(ivD)
-  );
-
-}
-
-const ivS =
- document.getElementById(
-  "ivS"
- ).value;
-
-if(ivS !== ""){
-
- filtered =
-  filtered.filter(
-   p =>
-   p.ivs[5] ==
-   Number(ivS)
-  );
-
-}
-
-document.getElementById(
- "searchResult"
-).innerHTML =
- JSON.stringify(
-  results,
-  null,
-  2
- );
-
- let html =
- "<table border='1'>";
+for(const p of results){
 
 html += `
-<tr>
-<th>F</th>
-<th>色</th>
-<th>性格</th>
-<th>特性</th>
-<th>性別</th>
-<th>H</th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-<th>S</th>
-<th>PID</th>
-<th>EC</th>
-<th>証</th>
-</tr>
+
+<div class="pokemonCard">
+
+  <div class="nameRow">
+
+    <div class="speciesArea">
+      <div>[種族名]</div>
+    </div>
+
+    <div class="natureArea">
+      ${p.nature}
+    </div>
+
+    <div class="shinyArea">
+      ${
+        p.shinyType === 1
+        ? "◆"
+        : p.shinyType === 2
+        ? "★"
+        : ""
+      }
+    </div>
+
+    <div class="markArea">
+      ${p.mark}
+    </div>
+
+    </div>
+
+<div class="middleRow">
+
+   <div class="frameArea"> 
+    ${p.frame}F :
+   </div>
+
+    <div class="abilityArea">
+      特性${p.ability}
+    </div>
+
+  </div>
+
+  <div class="bottomRow">
+
+    <span class="genderArea">
+      ${p.gender === 0 ? "♂" : "♀"}
+    </span>
+
+    <span class="ivArea">
+      ${p.ivs.join("-")}
+    </span>
+
+    <span class="lvArea">
+    Lv
+    </span>
+
+  </div>
+
+</div>
+
 `;
-
-for(const p of filtered){
-
- html += `
- <tr>
-
- <td>${p.frame}</td>
-
- <td>${
-  p.shinyType === 1
-   ? "◆"
-   : p.shinyType === 2
-   ? "★"
-   : ""
- }</td>
-
- <td>${p.nature}</td>
-
- <td>${p.ability}</td>
-
- <td>${
-  p.gender === 0
-   ? "♂"
-   : "♀"
- }</td>
-
- <td>${p.ivs[0]}</td>
- <td>${p.ivs[1]}</td>
- <td>${p.ivs[2]}</td>
- <td>${p.ivs[3]}</td>
- <td>${p.ivs[4]}</td>
- <td>${p.ivs[5]}</td>
-
- <td>${p.pid
-  .toString(16)
-  .toUpperCase()
- }</td>
-
- <td>${p.ec
-  .toString(16)
-  .toUpperCase()
- }</td>
-
- <td>${p.mark}</td>
-
- </tr>
- `;
+ 
 }
 
-html += "</table>";
+
 
 document.getElementById(
  "searchResult"

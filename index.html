@@ -192,6 +192,8 @@ onclick="clearAll()">
 
 <h2>個体検索</h2>
 
+
+<div class="topRow">
 TSV
 <input
  id="tsv"
@@ -216,7 +218,9 @@ TSV
 >
 証のお守り
 </p>
+</div>
 
+<div class="searchBox">
 <p>S0</p>
 <input id="searchS0">
 
@@ -234,6 +238,63 @@ TSV
 <button onclick="searchPokemon()">
 個体検索
 </button>
+</div>
+
+<div class="ivFilterArea">
+
+<div class="ivColumn">
+   
+<p>個体値</p>
+
+<div>H <input id="ivHMin" value="0"> ~ <input id="ivHMax" value="31"></div>
+<div>A <input id="ivAMin" value="0"> ~ <input id="ivAMax" value="31"></div>
+<div>B <input id="ivBMin" value="0"> ~ <input id="ivBMax" value="31"></div>
+<div>C <input id="ivCMin" value="0"> ~ <input id="ivCMax" value="31"></div>
+<div>D <input id="ivDMin" value="0"> ~ <input id="ivDMax" value="31"></div>
+<div>S <input id="ivSMin" value="0"> ~ <input id="ivSMax" value="31"></div>
+
+</div>
+
+<div class="filterColumn">
+
+<p>性格</p>
+
+<select id="natureFilter">
+
+<option value="">-</option>
+
+<option value="さみしがり">さみしがり</option>
+<option value="いじっぱり">いじっぱり</option>
+<option value="やんちゃ">やんちゃ</option>
+<option value="ゆうかん">ゆうかん</option>
+
+<option value="ずぶとい">ずぶとい</option>
+<option value="わんぱく">わんぱく</option>
+<option value="のうてんき">のうてんき</option>
+<option value="のんき">のんき</option>
+
+<option value="ひかえめ">ひかえめ</option>
+<option value="おっとり">おっとり</option>
+<option value="うっかりや">うっかりや</option>
+<option value="れいせい">れいせい</option>
+
+<option value="おだやか">おだやか</option>
+<option value="おとなしい">おとなしい</option>
+<option value="しんちょう">しんちょう</option>
+<option value="なまいき">なまいき</option>
+
+<option value="おくびょう">おくびょう</option>
+<option value="せっかち">せっかち</option>
+<option value="ようき">ようき</option>
+<option value="むじゃき">むじゃき</option>
+
+<option value="てれや">てれや</option>
+<option value="がんばりや">がんばりや</option>
+<option value="すなお">すなお</option>
+<option value="きまぐれ">きまぐれ</option>
+<option value="まじめ">まじめ</option>
+
+</select>
 
 <p>特性</p>
 
@@ -257,28 +318,6 @@ TSV
 
 <option value="1">
 ♀
-</option>
-
-</select>
-
-<p>色違い</p>
-
-<select id="shinyFilter">
-
-<option value="">
--
-</option>
-
-<option value="1">
-◆
-</option>
-
-<option value="2">
-★
-</option>
-
-<option value="3">
-◆/★
 </option>
 
 </select>
@@ -453,59 +492,33 @@ TSV
 
 </select>
 
-<p>個体値</p>
+<p>色違い</p>
 
-H <input id="ivH" value="">
-A <input id="ivA" value="">
-B <input id="ivB" value="">
-C <input id="ivC" value="">
-D <input id="ivD" value="">
-S <input id="ivS" value="">
+<select id="shinyFilter">
 
-<div id="searchResult"></div>
+<option value="">
+-
+</option>
 
-<p>性格</p>
+<option value="1">
+◆
+</option>
 
-<select id="natureFilter">
+<option value="2">
+★
+</option>
 
-<option value="">-</option>
-
-<option value="さみしがり">さみしがり</option>
-<option value="いじっぱり">いじっぱり</option>
-<option value="やんちゃ">やんちゃ</option>
-<option value="ゆうかん">ゆうかん</option>
-
-<option value="ずぶとい">ずぶとい</option>
-<option value="わんぱく">わんぱく</option>
-<option value="のうてんき">のうてんき</option>
-<option value="のんき">のんき</option>
-
-<option value="ひかえめ">ひかえめ</option>
-<option value="おっとり">おっとり</option>
-<option value="うっかりや">うっかりや</option>
-<option value="れいせい">れいせい</option>
-
-<option value="おだやか">おだやか</option>
-<option value="おとなしい">おとなしい</option>
-<option value="しんちょう">しんちょう</option>
-<option value="なまいき">なまいき</option>
-
-<option value="おくびょう">おくびょう</option>
-<option value="せっかち">せっかち</option>
-<option value="ようき">ようき</option>
-<option value="むじゃき">むじゃき</option>
-
-<option value="てれや">てれや</option>
-<option value="がんばりや">がんばりや</option>
-<option value="すなお">すなお</option>
-<option value="きまぐれ">きまぐれ</option>
-<option value="まじめ">まじめ</option>
-
-</select>
+<option value="3">
+◆/★
+</option>
 
 </select>
 
 </div>
+
+</div>
+
+<div id="searchResult"></div>
 
 <script src="script.js"></script>
 

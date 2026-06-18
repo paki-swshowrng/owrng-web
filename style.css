@@ -221,7 +221,112 @@ h3{
 
 }
 
+#searchResult{
 
+ height: 500px;
 
+ overflow-y: auto;
 
+ border: 1px solid #ccc;
 
+}
+
+.ivFilterArea{
+ display:flex;
+ justify-content:center;
+ align-items:flex-start;
+ gap:80px;
+}
+
+.ivColumn{
+ display:flex;
+ flex-direction:column;   
+}
+
+.filterColumn{
+ display:flex;
+ flex-direction:column;
+}
+
+.ivColumn input{
+width:50px;
+height:30px;
+}   
+
+.filterColumn select{
+    width:180px;
+}
+
+.filterColumn p{
+    margin:0 0 5px 0;
+}
+
+.ivColumn input{
+ width:50px;
+ height:30px;
+ text-align:center;   
+}
+
+.ivColumn div{
+margin-bottom:8px;
+white-space:nowrap
+}
+
+.pokemonCard{
+ width: 100%;   
+ border-bottom:1px dashed #666;
+ padding:12px 0;
+ box-sizing: border-box;
+
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+}
+
+.speciesLine,
+.abilityLine{
+    color:#666;
+}
+
+.nameRow{
+    display:flex;
+    align-items:flex-end;
+    gap:30px;
+}
+
+.middleRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:8px;
+}
+
+.bottomRow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 50px;
+}
+
+.speciesArea{
+    min-width:180px;
+}
+
+.natureArea{
+    min-width:80px;
+}
+
+.shinyArea{
+    min-width:40px;
+    text-align:center;
+}
+
+.markArea{
+    min-width:140px;
+    text-align:center;
+}
+
+.abilityArea{
+    min-width:140px;
+    text-align:center;
+}
