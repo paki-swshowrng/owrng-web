@@ -262,8 +262,8 @@ width:36px;
 }
 
 .ivColumn input{
- width:50px;
- height:30px;
+ width:40px;
+ height:20px;
  text-align:center;   
 }
 
@@ -329,4 +329,32 @@ white-space:nowrap
 .abilityArea{
     min-width:140px;
     text-align:center;
+}
+
+@media (max-width:768px){
+
+    .speciesArea{
+        min-width:90px;
+    }
+
+    .natureArea{
+        min-width:60px;
+    }
+
+    .shinyArea{
+        min-width:20px;
+    }
+
+    .markArea{
+        min-width:80px;
+    }
+
+    .abilityArea{
+        min-width:80px;
+    }
+
+    .nameRow{
+        gap:10px;
+    }
+
 }
