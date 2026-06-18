@@ -2326,6 +2326,15 @@ html += `
     <div class="nameRow">
         <span class="speciesName">[種族名]</span>
         <span class="natureName">${p.nature}</span>
+        <span class="shinyArea">
+        ${
+          p.shinyType === 1
+          ? "◆"
+          : p.shinyType === 2
+          ? "★"
+          : ""
+        }
+        </span>
     </div>
 
     <div class="ivRow">
@@ -2345,13 +2354,6 @@ html += `
     <div class="extraRow">
 
         <span>
-            ${
-                p.shinyType === 1
-                ? "◆ "
-                : p.shinyType === 2
-                ? "★ "
-                : ""
-            }
             ${p.mark}
         </span>
 
