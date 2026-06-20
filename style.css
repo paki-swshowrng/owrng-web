@@ -249,7 +249,7 @@ width:36px;
 }   
 
 .filterColumn select{
-    width:180px;
+    width:140px;
 }
 
 .filterColumn p{
@@ -321,7 +321,7 @@ white-space:nowrap
     align-items: center;
     justify-content: center;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .topRow p{
@@ -379,7 +379,7 @@ white-space:nowrap
 
 #lvMin,
 #lvMax{
-    width: 50px;
+    width: 45px;
 }
 
 .ivColumn,
