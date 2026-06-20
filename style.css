@@ -331,12 +331,13 @@ white-space:nowrap
     display: flex;
     align-items: center;
     gap: 6px;
-    white-space: wrap;
+    white-space: nowrap;
 }
 
 .topRow input[type="checkbox"]{
     width:20px;
     height:20px;
+    margin: 0;
 }
 
 #tsv{
