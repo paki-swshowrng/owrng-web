@@ -334,6 +334,11 @@ white-space:nowrap
     white-space: wrap;
 }
 
+.topRow input[type="checkbox"]{
+    width:20px;
+    height:20px;
+}
+
 #tsv{
     width: 60px;
     text-align: center;
