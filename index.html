@@ -220,29 +220,137 @@ TSV
 </p>
 </div>
 
-<div class="searchBox">
-<p>S0</p>
-<input id="searchS0">
+<div class="encounterRow">
 
-<p>S1</p>
-<input id="searchS1">
+<div class="leftEncounter">
 
-<p>検索範囲</p>
+<p>分類</p>
 
-<input id="searchRangeMin" value="0">
+<select id="categoryFilter">
 
-～
+<option value="daily" selected>
+日替わりシンボル
+</option>
 
-<input id="searchRangeMax" value="10000">
+<option value="symbol">
+ランダムシンボル
+</option>
 
-<button onclick="searchPokemon()">
-個体検索
-</button>
+<option value="grass">
+草むら
+</option>
+
+</select>
+
+<p>種族</p>
+
+<select id="speciesFilter">
+<option value="">-</option>
+</select>
+
+
+ <div id="speciesSuggestions"></div>
+
+   <p>時間帯</p>
+
+   <select id="timeFilter">
+   
+   <option value="朝(6:00~8:59)" selected>
+　 朝(6:00~8:59)
+   </option>
+
+   <option value="昼(9:00~18:59)">
+　 昼(9:00~18:59)
+   </option>
+
+   <option value="夕方(19:00~19:59)">
+　 夕方(19:00~19:59)
+   </option>
+
+　 <option value="夜(20:00~5:59)">
+　 夜(20:00~5:59)
+   </option>
+
+   </select>
+
+   </div>
+
+   <div class="rightEncounter">
+
+<p>生息地</p>
+
+<select id="areaFilter">
+<option value="">-</option>
+</select>
+
+<p>Lv</p>
+
+ <div>
+ <input
+  id="lvMin"
+  type="number"
+  min="1"
+  max="100"
+  >
+
+  ~
+
+  <input
+   id="lvMax"
+   type="number"
+   min="1"
+   max="100"
+   >
+   </div>
+
+   <p>天候</p>
+
+   <select id="weatherFilter">
+   <option value=""></option>
+   -
+   </option>
+
+   <option value="晴れ" selected>
+    晴れ
+</option>
+
+<option value="曇り">
+曇り
+</option>
+
+<option value="雨">
+雨
+</option>
+
+<option value="雷雨">
+雷雨
+</option>
+
+<option value="雪">
+雪
+</option>
+
+<option value="吹雪">
+吹雪
+</option>
+
+<option value="砂嵐">
+砂嵐
+</option>
+
+<option value="霧">
+霧
+</option>
+
+</select>
+
+</div>
+
 </div>
 
 <div class="ivFilterArea">
 
-<div class="ivColumn">
+<div class="ivColumn filterStart">
    
 <p>個体値</p>
 
@@ -256,6 +364,8 @@ TSV
 </div>
 
 <div class="filterColumn">
+
+<div class="filterStart">
 
 <p>性格</p>
 
@@ -518,8 +628,39 @@ TSV
 
 </div>
 
+</div>
+
+<div class="pokemonSearchBox">
+<p>S0</p>
+<input id="searchS0">
+
+<p>S1</p>
+<input id="searchS1">
+
+<p>検索範囲</p>
+
+<div class="rangeRow">
+
+<input id="searchRangeMin" value="0">
+
+～
+
+<input id="searchRangeMax" value="10000">
+
+</div>
+
+<button onclick="searchPokemon()">
+個体検索
+</button>
+</div>
+
+</div>
+
+</div>
+
 <div id="searchResult"></div>
 
+<script src="wildData.js"></script>
 <script src="script.js"></script>
 
 </body>

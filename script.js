@@ -1,3 +1,4 @@
+console.log(WILD_DATA);
 function toggleMenu(){
 
  const m =
@@ -1747,11 +1748,35 @@ for(const [idx, min, max] of ivChecks){
 
 }
 
+console.log(
+  p.category,
+  filters.category
+);
+
+if(
+ filters.category !== "" &&
+ p.category !== filters.category
+){
+  return false;
+}
+
+if(
+ filters.area !== "" &&
+ p.area !== filters.area
+){
+ return false;
+}
+
+if(
+ filters.weather !== "" &&
+ p.weather !== filters.weather
+){
+ return false;
+}
+
  return true;
 
 }
-
-
 
 function generatePokemonListFast(
  s0,
@@ -1817,11 +1842,6 @@ list.push(p);
 
  }
 
-console.log(
- "results",
- list.length
-);
-
  return list;
 
 }
@@ -1854,7 +1874,45 @@ let totalConsume = 0;
 workRng.getRandMax(100);
 
 // slot固定
-const slot = 0;
+const category =
+document.getElementById(
+  "categoryFilter"
+).value;
+
+const area =
+document.getElementById(
+ "areaFilter"
+).value;
+
+const weather =
+document.getElementById(
+ "weatherFilter"
+).value;
+
+const wildData =
+WILD_DATA.find(
+ x =>
+ x.area === area &&
+ x.weather === weather
+);
+
+console.log(
+ "wildData",
+ wildData
+);
+
+console.log(
+  wildData.minLv,
+  wildData.maxLv
+);
+
+let slot = 0;
+
+if(
+  category === "daily"
+){
+  slot = 0;
+}
 
 //   rng.getRandMax(0xFFFFFFFF);
 
@@ -2117,8 +2175,25 @@ if(shiny){
  return {
   frame,
   slot,
+  category,
   nature,
   ability,
+
+  area:
+  document.getElementById(
+  "areaFilter"
+  ).value,
+
+  weather:
+  document.getElementById(
+  "weatherFilter"
+  ).value,
+
+  species:
+  document.getElementById(
+    "speciesFilter"
+  ).value,
+
   gender,
   ec,
  pid,
@@ -2269,7 +2344,42 @@ ivSMin:
 ivSMax:
  document.getElementById(
   "ivSMax"
- ).value
+ ).value,
+
+ category:
+document.getElementById(
+ "categoryFilter"
+).value,
+
+area:
+document.getElementById(
+ "areaFilter"
+).value,
+
+species:
+document.getElementById(
+ "speciesFilter"
+).value,
+
+lvMin:
+document.getElementById(
+ "lvMin"
+).value,
+
+lvMax:
+document.getElementById(
+ "lvMax"
+).value,
+
+time:
+document.getElementById(
+ "timeFilter"
+).value,
+
+weather:
+document.getElementById(
+ "weatherFilter"
+).value
 
 };
 
@@ -2294,37 +2404,28 @@ const results =
 
  let html = "";
 
-//html += `
-//<tr>
-//<th>F</th>
-//<th>色</th>
-//<th>性格</th>
-//<th>特性</th>
-//<th>性別</th>
-//<th>H</th>
-//<th>A</th>
-//<th>B</th>
-//<th>C</th>
-//<th>D</th>
-//<th>S</th>
-//<th>PID</th>
-//<th>EC</th>
-//<th>証</th>
-//</tr>
-//`;
-
 for(const p of results){
 
 html += `
 
-<div class="pokemonCard">
+<div class="
+pokemonCard
+${
+  p.shinyType === 1
+  ? "squareShiny"
+  : p.shinyType ===2
+  ? "starShiny"
+  : ""
+}">
 
     <div class="frameRow">
         ${p.frame}F :
     </div>
 
     <div class="nameRow">
-        <span class="speciesName">[種族名]</span>
+        <span class="speciesName">
+        ${p.species}
+        </span>
         <span class="natureName">${p.nature}</span>
         <span class="shinyArea">
         ${
@@ -2369,7 +2470,7 @@ html += `
  
 }
 
-
+console.log(results);
 
 document.getElementById(
  "searchResult"
@@ -2377,4 +2478,198 @@ document.getElementById(
 
 }
 
+const areaFilter =
+document.getElementById(
+ "areaFilter"
+);
 
+const areaSet =
+new Set();
+
+for(
+ const data of WILD_DATA
+){
+
+ areaSet.add(
+  data.area
+ );
+
+}
+
+for(
+ const area of areaSet
+){
+
+ const option =
+ document.createElement(
+  "option"
+ );
+
+ option.value =
+ area;
+
+ option.textContent =
+ area;
+
+ areaFilter.appendChild(
+  option
+ );
+
+}
+
+const weatherFilter =
+document.getElementById(
+ "weatherFilter"
+);
+
+areaFilter.addEventListener(
+ "change",
+ function(){
+
+  weatherFilter.innerHTML =
+  '<option value="">-</option>';
+
+  const weatherSet =
+  new Set();
+
+  for(
+   const data of WILD_DATA
+  ){
+
+   if(
+    data.area !==
+    areaFilter.value
+   ){
+    continue;
+   }
+
+   weatherSet.add(
+    data.weather
+   );
+
+  }
+
+  for(
+   const weather of weatherSet
+  ){
+
+   const option =
+   document.createElement(
+    "option"
+   );
+
+   option.value =
+   weather;
+
+   option.textContent =
+   weather;
+
+   weatherFilter.appendChild(
+    option
+   );
+
+  }
+
+ }
+
+);
+
+const speciesFilter =
+document.getElementById(
+ "speciesFilter"
+);
+
+weatherFilter.addEventListener(
+ "change",
+ function(){
+
+  const data =
+  WILD_DATA.find(
+   x =>
+   x.area === areaFilter.value &&
+   x.weather === weatherFilter.value
+  );
+
+  if(!data){
+   speciesFilter.value = "";
+   return;
+  }
+
+  document.getElementById(
+ "lvMin"
+).value =
+ data.minLv;
+
+document.getElementById(
+ "lvMax"
+).value =
+ data.maxLv;
+
+speciesFilter.innerHTML =
+'<option value="">-</option>';
+
+for(
+ const species of
+ data.species
+){
+
+ const option =
+ document.createElement(
+  "option"
+ );
+
+ option.value =
+ species;
+
+ option.textContent =
+ species;
+
+ speciesFilter.appendChild(
+  option
+ );
+
+}
+
+for(
+ const species of data.species
+){
+
+ const option =
+ document.createElement(
+  "option"
+ );
+
+ option.value =
+ species;
+
+ option.textContent =
+ species;
+
+ speciesFilter.appendChild(
+  option
+ );
+
+}
+
+ }
+
+);
+
+const categoryFilter =
+document.getElementById(
+ "categoryFilter"
+);
+
+categoryFilter.addEventListener(
+ "change",
+ function(){
+
+  areaFilter.disabled =
+   categoryFilter.value ===
+   "daily";
+
+   speciesFilter.disabled -
+   false;
+
+ }
+);

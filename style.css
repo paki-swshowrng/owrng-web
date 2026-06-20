@@ -134,7 +134,7 @@ width:48%;
 
 .searchBox{
  width:48%;
- margin:0 auto 15px auto;
+ margin: 0 auto 15px auto;
 }
 
 #consumeTable{
@@ -231,21 +231,16 @@ h3{
 
 }
 
-.ivFilterArea{
- display:flex;
- justify-content:center;
- align-items:flex-start;
- gap:20px;
-}
-
 .ivColumn{
  display:flex;
  flex-direction:column;   
+ align-items:center;
 }
 
 .filterColumn{
  display:flex;
  flex-direction:column;
+ align-items:center;
 }
 
 .ivColumn input{
@@ -254,7 +249,7 @@ width:36px;
 }   
 
 .filterColumn select{
-    width:120px;
+    width:180px;
 }
 
 .filterColumn p{
@@ -279,7 +274,10 @@ white-space:nowrap
     display:flex;
     flex-direction:column;
     gap:8px;
+    color: black;
 }
+
+
 
 .frameRow{
     font-weight:bold;
@@ -307,4 +305,91 @@ white-space:nowrap
         gap:10px;
     }
 
+}
+
+.ivColumn p,
+.filterColumn p{
+    margin:0 0 10px 0;
+    height:40px;
+    display:flex;
+    align-items: center;
+
+}
+
+.topRow{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.topRow p{
+    margin: 0;
+}
+
+#tsv{
+    width: 60px;
+    text-align: center;
+}
+
+.pokemonCard:nth-child(odd){
+    background-color: #fff3e0;
+}
+
+.pokemonCard:nth-child(even){
+    background-color: white;
+}
+
+.squareShiny{
+    background-color:#bddef1 !important;
+}
+
+.starShiny{
+    background-color: #03acfa !important;
+}
+
+.ivFilterArea{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+.leftEncounter,
+.rightEncounter{
+    width:220px;
+}
+
+.encounterRow{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+
+}
+
+#categoryFilter,
+#areaFilter,
+#speciesFilter,
+#timeFilter,
+#weatherFilter{
+    width: 180px;
+}
+
+#lvMin,
+#lvMax{
+    width: 60px;
+}
+
+.ivColumn,
+.filterColumn{
+    width:220px;
+}
+
+.filterStart{
+    margin-top:40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
