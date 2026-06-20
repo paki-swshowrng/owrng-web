@@ -353,7 +353,7 @@ white-space:nowrap
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 80px;
+    gap: 40px;
 }
 
 .leftEncounter,
