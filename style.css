@@ -250,6 +250,8 @@ width:36px;
 
 .filterColumn select{
     width:140px;
+    max-width: 140px;
+    box-sizing: border-box;
 }
 
 .filterColumn p{
@@ -326,6 +328,7 @@ white-space:nowrap
 
 .topRow p{
     margin: 0;
+    white-space: nowrap;
 }
 
 #tsv{
@@ -358,7 +361,7 @@ white-space:nowrap
 
 .leftEncounter,
 .rightEncounter{
-    width:220px;
+    width:180px;
 }
 
 .encounterRow{
