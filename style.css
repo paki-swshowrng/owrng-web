@@ -438,3 +438,9 @@ summary{
 details[open] summary{
     margin-bottom:15px;
 }
+
+summary{
+    background:#222;
+    padding:12px;
+    border-radius:10px;
+}
