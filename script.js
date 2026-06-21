@@ -1,4 +1,3 @@
-console.log(WILD_DATA);
 function toggleMenu(){
 
  const m =
@@ -39,6 +38,11 @@ function showPage(id){
  document
   .getElementById(id)
   .classList.add("active");
+
+  sessionStorage.setItem(
+  "currentPage",
+  id
+ );
 
  closeMenu();
 
@@ -971,7 +975,7 @@ function clearAll(){
 
  if(
   !confirm(
-   "本当にクリアしますか？"
+   "入力を全てクリアします。よろしいですか？"
   )
  ){
   return;
@@ -1255,6 +1259,281 @@ sessionStorage.setItem(
   window.lastAdvance ?? ""
  );
 
+ sessionStorage.setItem(
+ "categoryFilter",
+ document.getElementById(
+  "categoryFilter"
+ ).value
+);
+
+sessionStorage.setItem(
+ "areaFilter",
+ document.getElementById(
+  "areaFilter"
+ ).value
+);
+
+sessionStorage.setItem(
+ "timeFilter",
+ document.getElementById(
+  "timeFilter"
+ ).value
+);
+
+if(
+ document.getElementById(
+  "weatherFilter"
+ ).value !== ""
+){
+ sessionStorage.setItem(
+  "weatherFilter",
+  document.getElementById(
+   "weatherFilter"
+  ).value
+ );
+}
+
+sessionStorage.setItem(
+ "lvMin",
+ document.getElementById(
+  "lvMin"
+ ).value
+);
+
+sessionStorage.setItem(
+ "lvMax",
+ document.getElementById(
+  "lvMax"
+ ).value
+);
+
+sessionStorage.setItem(
+ "natureFilter",
+ document.getElementById(
+  "natureFilter"
+ ).value
+);
+
+sessionStorage.setItem(
+ "abilityFilter",
+ document.getElementById(
+  "abilityFilter"
+ ).value
+);
+
+sessionStorage.setItem(
+ "genderFilter",
+ document.getElementById(
+  "genderFilter"
+ ).value
+);
+
+sessionStorage.setItem(
+ "markFilter",
+ document.getElementById(
+  "markFilter"
+ ).value
+);
+
+sessionStorage.setItem(
+ "shinyFilter",
+ document.getElementById(
+  "shinyFilter"
+ ).value
+);
+
+[
+ "ivHMin","ivHMax",
+ "ivAMin","ivAMax",
+ "ivBMin","ivBMax",
+ "ivCMin","ivCMax",
+ "ivDMin","ivDMax",
+ "ivSMin","ivSMax"
+].forEach(id => {
+
+ sessionStorage.setItem(
+  id,
+  document.getElementById(id).value
+ );
+
+});
+
+sessionStorage.setItem(
+ "searchS0",
+ document.getElementById(
+  "searchS0"
+ ).value
+);
+
+sessionStorage.setItem(
+ "searchS1",
+ document.getElementById(
+  "searchS1"
+ ).value
+);
+
+sessionStorage.setItem(
+ "searchRangeMin",
+ document.getElementById(
+  "searchRangeMin"
+ ).value
+);
+
+sessionStorage.setItem(
+ "searchRangeMax",
+ document.getElementById(
+  "searchRangeMax"
+ ).value
+);
+
+sessionStorage.setItem(
+ "tsv",
+ document.getElementById(
+  "tsv"
+ ).value
+);
+
+sessionStorage.setItem(
+ "shinyCharm",
+ document.getElementById(
+  "shinyCharm"
+ ).checked
+);
+
+sessionStorage.setItem(
+ "markCharm",
+ document.getElementById(
+  "markCharm"
+ ).checked
+);
+
+sessionStorage.setItem(
+
+ "areaFilter",
+
+ document.getElementById(
+
+  "areaFilter"
+
+ ).value
+
+);
+
+if(
+ document.getElementById(
+  "speciesFilter"
+ ).value !== ""
+){
+ sessionStorage.setItem(
+  "speciesFilter",
+  document.getElementById(
+   "speciesFilter"
+  ).value
+ );
+}
+
+}
+
+function clearFilters(){
+
+ if(
+  !confirm(
+   "入力を全てクリアします。よろしいですか？"
+  )
+ ){
+  return;
+ }  
+
+ document.getElementById(
+  "categoryFilter"
+ ).value = "daily";
+
+ document.getElementById(
+  "timeFilter"
+ ).value = "朝(6:00~8:59)";
+
+ document.getElementById(
+  "areaFilter"
+ ).value = "";
+
+ areaFilter.dispatchEvent(
+  new Event("change")
+ );
+
+ document.getElementById(
+  "weatherFilter"
+ ).value = "";
+
+ weatherFilter.dispatchEvent(
+  new Event("change")
+ );
+
+ document.getElementById(
+  "speciesFilter"
+ ).value = "";
+
+ document.getElementById(
+  "lvMin"
+ ).value = "";
+
+ document.getElementById(
+  "lvMax"
+ ).value = "";
+
+ document.getElementById(
+  "natureFilter"
+ ).value = "";
+
+ document.getElementById(
+  "abilityFilter"
+ ).value = "";
+
+ document.getElementById(
+  "genderFilter"
+ ).value = "";
+
+ document.getElementById(
+  "markFilter"
+ ).value = "";
+
+ document.getElementById(
+  "shinyFilter"
+ ).value = "";
+
+ [
+  "ivHMin","ivHMax",
+  "ivAMin","ivAMax",
+  "ivBMin","ivBMax",
+  "ivCMin","ivCMax",
+  "ivDMin","ivDMax",
+  "ivSMin","ivSMax"
+ ].forEach(id => {
+
+  document.getElementById(id).value =
+   id.includes("Min")
+   ? "0"
+   : "31";
+
+ });
+
+ document.getElementById(
+  "searchS0"
+ ).value = "";
+
+ document.getElementById(
+  "searchS1"
+ ).value = "";
+
+ document.getElementById(
+  "searchRangeMin"
+ ).value = "0";
+
+ document.getElementById(
+  "searchRangeMax"
+ ).value = "10000";
+
+ saveData();
+
 }
 
 function loadData(){
@@ -1375,6 +1654,194 @@ document.getElementById(
    );
  }
 
+document.getElementById(
+ "categoryFilter"
+).value =
+ sessionStorage.getItem(
+  "categoryFilter"
+ ) || "daily";
+
+document.getElementById(
+ "timeFilter"
+).value =
+ sessionStorage.getItem(
+  "timeFilter"
+ ) || "朝(6:00~8:59)";
+
+document.getElementById(
+ "lvMin"
+).value =
+ sessionStorage.getItem(
+  "lvMin"
+ ) || "";
+
+document.getElementById(
+ "lvMax"
+).value =
+ sessionStorage.getItem(
+  "lvMax"
+ ) || "";
+
+document.getElementById(
+ "natureFilter"
+).value =
+ sessionStorage.getItem(
+  "natureFilter"
+ ) || "";
+
+document.getElementById(
+ "abilityFilter"
+).value =
+ sessionStorage.getItem(
+  "abilityFilter"
+ ) || "";
+
+document.getElementById(
+ "genderFilter"
+).value =
+ sessionStorage.getItem(
+  "genderFilter"
+ ) || "";
+
+document.getElementById(
+ "markFilter"
+).value =
+ sessionStorage.getItem(
+  "markFilter"
+ ) || "";
+
+document.getElementById(
+ "shinyFilter"
+).value =
+ sessionStorage.getItem(
+  "shinyFilter"
+ ) || "";
+
+[
+ "ivHMin","ivHMax",
+ "ivAMin","ivAMax",
+ "ivBMin","ivBMax",
+ "ivCMin","ivCMax",
+ "ivDMin","ivDMax",
+ "ivSMin","ivSMax"
+].forEach(id => {
+
+ document.getElementById(id).value =
+  sessionStorage.getItem(id) ??
+  (id.includes("Min") ? "0" : "31");
+
+});
+
+document.getElementById(
+ "searchS0"
+).value =
+ sessionStorage.getItem(
+  "searchS0"
+ ) || "";
+
+document.getElementById(
+ "searchS1"
+).value =
+ sessionStorage.getItem(
+  "searchS1"
+ ) || "";
+
+document.getElementById(
+ "searchRangeMin"
+).value =
+ sessionStorage.getItem(
+  "searchRangeMin"
+ ) || "0";
+
+document.getElementById(
+ "searchRangeMax"
+).value =
+ sessionStorage.getItem(
+  "searchRangeMax"
+ ) || "10000";
+
+document.getElementById(
+ "tsv"
+).value =
+ sessionStorage.getItem(
+  "tsv"
+ ) || "0";
+
+document.getElementById(
+ "shinyCharm"
+).checked =
+ sessionStorage.getItem(
+  "shinyCharm"
+ ) === "true";
+
+document.getElementById(
+ "markCharm"
+).checked =
+ sessionStorage.getItem(
+  "markCharm"
+ ) === "true";
+
+ document.getElementById(
+ "areaFilter"
+).value =
+ sessionStorage.getItem(
+  "areaFilter"
+ ) || "";
+
+ areaFilter.dispatchEvent(
+ new Event("change")
+);
+
+document.getElementById(
+ "weatherFilter"
+).value =
+ sessionStorage.getItem(
+  "weatherFilter"
+ ) || "晴れ";
+
+weatherFilter.dispatchEvent(
+ new Event("change")
+);
+
+document.getElementById(
+ "speciesFilter"
+).value =
+ sessionStorage.getItem(
+  "speciesFilter"
+ ) || "";
+
+const currentPage =
+ sessionStorage.getItem(
+  "currentPage"
+ );
+
+if(currentPage){
+
+ showPage(
+  currentPage
+ );
+
+}
+
+ categoryFilter.dispatchEvent(
+ new Event("change")
+);
+
+console.log(
+ "category=",
+ categoryFilter.value
+);
+
+console.log(
+ "area disabled=",
+ areaFilter.disabled
+);
+
+console.log(
+ "weather disabled=",
+ weatherFilter.disabled
+);
+
 }
 
 window.addEventListener(
@@ -1428,6 +1895,156 @@ document.getElementById(
  "bitsInput"
 ).addEventListener(
  "input",
+ saveData
+);
+
+document.getElementById(
+ "categoryFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "timeFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "weatherFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "lvMin"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "lvMax"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "natureFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "abilityFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "genderFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "markFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "shinyFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+[
+ "ivHMin","ivHMax",
+ "ivAMin","ivAMax",
+ "ivBMin","ivBMax",
+ "ivCMin","ivCMax",
+ "ivDMin","ivDMax",
+ "ivSMin","ivSMax"
+].forEach(id => {
+
+ document.getElementById(id)
+ .addEventListener(
+  "input",
+  saveData
+ );
+
+})
+
+document.getElementById(
+ "searchS0"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "searchS1"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "searchRangeMin"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "searchRangeMax"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "tsv"
+).addEventListener(
+ "input",
+ saveData
+);
+
+document.getElementById(
+ "shinyCharm"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "markCharm"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "areaFilter"
+).addEventListener(
+ "change",
+ saveData
+);
+
+document.getElementById(
+ "speciesFilter"
+).addEventListener(
+ "change",
  saveData
 );
 
@@ -1607,12 +2224,6 @@ const idx =
   )
  );
 
-console.log(
- "MARK IDX",
- idx,
- MARK_LISTS[idx]
- );
-
 return MARK_LISTS[idx];
 
 }
@@ -1678,11 +2289,6 @@ function matchFilter(
  filters
 ){
 
-console.log(
- "filter",
- filters.shiny
-);  
-
  if(
   filters.gender !== "" &&
   p.gender.toString() !==
@@ -1747,11 +2353,6 @@ for(const [idx, min, max] of ivChecks){
  }
 
 }
-
-console.log(
-  p.category,
-  filters.category
-);
 
 if(
  filters.category !== "" &&
@@ -1854,14 +2455,6 @@ function generatePokemonFromCurrentSeed(
  tsv
 ){
 
-console.log("frame", frame);
-
-console.log(
- "seed",
- rng.s0.toString(16),
- rng.s1.toString(16)
-);
-
 const workRng =
  new Xoroshiro128p(
   rng.s0,
@@ -1870,14 +2463,30 @@ const workRng =
 
 let totalConsume = 0;
 
-// 日替わりシンボル
-workRng.getRandMax(100);
-
 // slot固定
 const category =
 document.getElementById(
   "categoryFilter"
 ).value;
+
+if(
+ category === "daily"
+){
+
+ workRng.getRandMax(100);
+
+}
+else{
+
+ workRng.getRandMax(
+  0xFFFFFFFF
+ );
+
+ workRng.getRandMax(100);
+
+ workRng.getRandMax(100);
+
+}
 
 const area =
 document.getElementById(
@@ -1896,23 +2505,46 @@ WILD_DATA.find(
  x.weather === weather
 );
 
-console.log(
- "wildData",
- wildData
-);
-
-console.log(
-  wildData.minLv,
-  wildData.maxLv
-);
+let species = "";
 
 let slot = 0;
 
+let level = 0;
+
 if(
-  category === "daily"
+ category !== "daily"
 ){
-  slot = 0;
+
+ slot =
+  Number(
+   workRng.getRandMax(100)
+  );
+
+ species =
+  getSlotSpecies(
+   wildData.slots,
+   slot
+  );
+
+ level =
+  wildData.minLv +
+  Number(
+   workRng.getRandMax(
+    wildData.maxLv -
+    wildData.minLv +
+    1
+   )
+  );
+
 }
+
+//let slot = 0;
+
+//if(
+  //category === "daily"
+//){
+  //slot = 0;
+//}
 
 //   rng.getRandMax(0xFFFFFFFF);
 
@@ -1940,8 +2572,6 @@ const shinyRolls =
  let shiny = false;
 
 for(let i=0;i<shinyRolls;i++){
-
-console.log("inside for");
 
  const num4 =
   Number(
@@ -2152,25 +2782,12 @@ Number(
   localRng.getRandMax(128)
  );
 
-console.log(
- "MARK RNG",
- workRng.s0.toString(16),
- workRng.s1.toString(16)
-); 
-
  const shinyMarkData =
  genMark(
   workRng,
   "曇り",
   false
  );
-
-if(shiny){
- console.log(
-  "SHINY RETURN",
-  frame
- );
-} 
 
  return {
   frame,
@@ -2189,11 +2806,14 @@ if(shiny){
   "weatherFilter"
   ).value,
 
-  species:
-  document.getElementById(
+species:
+ category === "daily"
+ ? document.getElementById(
     "speciesFilter"
-  ).value,
+   ).value
+ : species,
 
+ level,
   gender,
   ec,
  pid,
@@ -2448,7 +3068,7 @@ ${
         </span>
 
         <span>
-            Lv
+            Lv${p.level}
         </span>
     </div>
 
@@ -2469,8 +3089,6 @@ ${
 `;
  
 }
-
-console.log(results);
 
 document.getElementById(
  "searchResult"
@@ -2526,8 +3144,7 @@ areaFilter.addEventListener(
  "change",
  function(){
 
-  weatherFilter.innerHTML =
-  '<option value="">-</option>';
+  weatherFilter.innerHTML = "";
 
   const weatherSet =
   new Set();
@@ -2535,6 +3152,16 @@ areaFilter.addEventListener(
   for(
    const data of WILD_DATA
   ){
+
+if(
+ categoryFilter.value ===
+ "daily"
+){
+ weatherSet.add(
+  data.weather
+ );
+ continue;
+}
 
    if(
     data.area !==
@@ -2569,6 +3196,12 @@ areaFilter.addEventListener(
    );
 
   }
+
+weatherFilter.value = "晴れ"
+
+weatherFilter.dispatchEvent(
+ new Event("change")
+);
 
  }
 
@@ -2609,8 +3242,7 @@ speciesFilter.innerHTML =
 '<option value="">-</option>';
 
 for(
- const species of
- data.species
+ const slot of data.slots
 ){
 
  const option =
@@ -2619,10 +3251,10 @@ for(
  );
 
  option.value =
- species;
+ slot.species;
 
  option.textContent =
- species;
+ slot.species;
 
  speciesFilter.appendChild(
   option
@@ -2630,24 +3262,20 @@ for(
 
 }
 
-for(
- const species of data.species
-){
-
- const option =
- document.createElement(
-  "option"
+const savedSpecies =
+ sessionStorage.getItem(
+  "speciesFilter"
  );
 
- option.value =
- species;
+ console.log(
+ "復元する種族:",
+ savedSpecies
+);
 
- option.textContent =
- species;
+if(savedSpecies){
 
- speciesFilter.appendChild(
-  option
- );
+ speciesFilter.value =
+  savedSpecies;
 
 }
 
@@ -2668,8 +3296,34 @@ categoryFilter.addEventListener(
    categoryFilter.value ===
    "daily";
 
-   speciesFilter.disabled -
+   speciesFilter.disabled =
    false;
 
  }
 );
+
+function getSlotSpecies(
+ slots,
+ slot
+){
+
+ for(
+  let i = 1;
+  i < slots.length;
+  i++
+ ){
+
+  if(
+   slot < slots[i].per
+  ){
+   return slots[i - 1].species;
+  }
+
+ }
+
+ return slots[
+  slots.length - 1
+ ].species;
+
+}
+

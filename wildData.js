@@ -1,18 +1,33 @@
 const WILD_DATA = [
 
 // 1番道路
+
 {
  area:"1番道路",
  weather:"晴れ",
  minLv:3,
  maxLv:6,
- species:[
-  "ホシガリス",
-  "ココガラ",
-  "ウールー",
-  "クスネ"
+
+ slots:[
+  {
+   species:"ホシガリス",
+   per:0
+  },
+  {
+   species:"ココガラ",
+   per:50
+  },
+  {
+   species:"ウールー",
+   per:80
+  },
+  {
+   species:"クスネ",
+   per:95
+  }
  ]
 },
+
 {
  area:"1番道路",
  weather:"曇り",
