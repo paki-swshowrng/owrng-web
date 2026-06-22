@@ -2416,16 +2416,37 @@ for(
  i++
 ){
 
-const p =
- generatePokemonFromCurrentSeed(
-  rng,
-  startFrame + i,
-  shinyCharm,
-  markCharm,
-  tsv,
-  localRng
- );
+const category =
+ document.getElementById(
+  "categoryFilter"
+ ).value;
 
+const p =
+ category === "daily"
+ ? generatePokemonFromCurrentSeed(
+    rng,
+    startFrame + i,
+    shinyCharm,
+    markCharm,
+    tsv
+   )
+ : generateRandomSymbolPokemon(
+    rng,
+    startFrame + i,
+    shinyCharm,
+    markCharm,
+    tsv
+   );
+
+   console.log(p);
+
+console.log(
+ "filter",
+ matchFilter(
+  p,
+  filters
+ )
+);
  
 rng.getRand(2);
 
@@ -2608,42 +2629,29 @@ for(let i=0;i<shinyRolls;i++){
 
 }
 
-const genderRoll =
+const abilityRoll =
  Number(
   workRng.getRandMax(8)
  );
 
- const nature =
-  NATURES[
-   Number(
-    workRng.getRandMax(25)
-   )
-  ];
+const nature =
+ NATURES[
+  Number(
+   workRng.getRandMax(25)
+  )
+ ];
 
- // const gender =
- //(
-  //Number(
-   //workRng.getRandMax(2)
-  //) === 1
- //)
- //? 0
- //: 1;
-
- const gender =
+const gender =
  (
-  genderRoll & 1
- ) === 1 
+  Number(
+   workRng.getRandMax(2)
+  ) === 1
+ )
  ? 0
  : 1;
 
-   const ability =
-   (
-    Number(
-      workRng.getRandMax(2)
-    ) === 1
-   )
-   ? 0
-   : 1; 
+const ability =
+ abilityRoll & 1;
 
 const rawRand = workRng.getRand();
 
@@ -2829,6 +2837,7 @@ species:
  ivs,
  height,
 weight,
+slotroll: slot,
   mark:
   shinyMarkData !== ""
    ? shinyMarkData
@@ -3079,7 +3088,7 @@ ${
         </span>
 
         <span>
-            特性${p.ability}
+            特性${p.ability + 1}
         </span>
 
     </div>
@@ -3327,3 +3336,389 @@ function getSlotSpecies(
 
 }
 
+function generateRandomSymbolPokemon(
+ rng,
+ frame,
+ shinyCharm,
+ markCharm,
+ tsv
+){
+
+const HELD_ITEM_SPECIES = [
+ "ホシガリス"
+];
+
+const workRng =
+ new Xoroshiro128p(
+  rng.s0,
+  rng.s1
+ );
+
+let totalConsume = 0;
+
+ //slot固定
+workRng.getRandMax(
+ 0xFFFFFFFF
+);
+
+workRng.getRandMax(100);
+
+workRng.getRandMax(100);
+
+
+const area =
+document.getElementById(
+ "areaFilter"
+).value;
+
+const weather =
+document.getElementById(
+ "weatherFilter"
+).value;
+
+const wildData =
+WILD_DATA.find(
+ x =>
+ x.area === area &&
+ x.weather === weather
+);
+
+let species = "";
+
+let slot = 0;
+
+let level = 0;
+
+slot =
+ Number(
+  workRng.getRandMax(100)
+ );
+
+ console.log(
+ "frame",
+ frame,
+ "slot",
+ slot
+);
+
+species =
+ getSlotSpecies(
+  wildData.slots,
+  slot
+ );
+
+level =
+ wildData.minLv +
+ Number(
+  workRng.getRandMax(
+   wildData.maxLv -
+   wildData.minLv +
+   1
+  )
+ );
+
+console.log(
+ "frame",
+ frame,
+ "level",
+ level
+)
+
+//let slot = 0;
+
+//if(
+  //category === "daily"
+//){
+  //slot = 0;
+//}
+
+//   rng.getRandMax(0xFFFFFFFF);
+
+//rng.getRandMax(100);
+
+//rng.getRandMax(100);
+
+//const slot =
+ //Number(
+  //rng.getRandMax(100)
+ //);
+
+   const mark = 
+ genMark( 
+  workRng,
+  weather,
+  false);
+
+  workRng.getRandMax(1000);
+
+  //workRng.getRand();
+
+const shinyRolls =
+ shinyCharm ? 3 : 1;
+
+ let shiny = false;
+
+for(let i=0;i<shinyRolls;i++){
+
+ const num4 =
+  Number(
+   workRng.getRand() &
+   0xFFFFFFFFn
+  );
+
+  const roll =
+ (
+  (
+   (
+    num4 ^
+    (num4 >>> 16)
+   ) & 0xFFFF
+  ) >>> 4
+ );
+
+ if(
+  (
+   (
+    (
+     (    
+     num4 ^
+     (num4 >>> 16)
+    ) & 0xFFFF
+   ) >>> 4
+  ) ^
+  tsv
+  ) === 0
+ ){
+  shiny = true;
+  break;
+ }
+
+}
+
+const genderRoll =
+ Number(
+  workRng.getRandMax(8)
+ );
+
+ const nature =
+  NATURES[
+   Number(
+    workRng.getRandMax(25)
+   )
+  ];
+
+ const gender =
+ (
+  genderRoll & 1
+ ) === 1 
+ ? 0
+ : 1;
+
+   const ability =
+   (
+    Number(
+      workRng.getRandMax(2)
+    ) === 1
+   )
+   ? 0
+   : 1;
+   
+   if(
+ HELD_ITEM_SPECIES.includes(
+  species
+ )
+){
+ workRng.getRandMax(100);
+}
+
+const rawRand = workRng.getRand();
+
+console.log(
+ "frame",
+ frame,
+ "rawRand",
+ rawRand.toString(16)
+);
+
+const localSeed =
+ Number(
+  rawRand &
+  0xFFFFFFFFn
+ );
+
+const localRng =
+ new Xoroshiro128p(
+  BigInt(localSeed),
+  9413281287807789659n
+ );
+
+
+
+const ec =
+ Number(
+  localRng.getRand() &
+  0xFFFFFFFFn
+ );
+
+let pid =
+ Number(
+  localRng.getRand() &
+  0xFFFFFFFFn
+ );
+
+//if(shinyCharm){
+
+// for(
+//  let i = 0;
+//  i < 2;
+//  i++
+// ){
+
+//  const testPid =
+//   Number(
+//    localRng.getRand() &
+//    0xFFFFFFFFn
+//   );
+
+//  const testPsv =
+//   (
+//    (
+//     (testPid >>> 16) ^
+//     (testPid & 0xFFFF)
+//    )
+//   ) >>> 0;
+
+//  if(
+//   (testPsv ^ tsv) < 16
+//  ){
+
+//  pid = testPid;
+//   break;
+
+//  }
+
+// }
+
+//}
+
+ const psv =
+ (
+  ((pid >>> 16) ^
+   (pid & 0xFFFF))
+ ) >>> 0;
+
+let shinyType = 0;
+
+const xor =
+ (
+  (pid >>> 16) ^
+  (pid & 0xFFFF) ^
+  tsv
+ ) >>> 0;
+
+if(shiny){
+
+ if(xor >= 16){
+
+  pid =
+   (
+    (
+     (tsv ^
+      (pid & 0xFFFF)
+     ) << 16
+    ) |
+    (pid & 0xFFFF)
+   ) >>> 0;
+
+  shinyType = 1;
+
+ }else if(xor > 0){
+
+  shinyType = 2;
+
+ }else{
+
+  shinyType = 1;
+
+ }
+
+}else if(xor < 16){
+
+ pid =
+  (pid ^ 0x10000000)
+  >>> 0;
+
+}
+
+const ivs = [
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32)),
+ Number(localRng.getRandMax(32))
+];
+
+const height = 
+Number(
+  localRng.getRandMax(129)
+ ) +
+ Number(
+  localRng.getRandMax(128)
+ );
+
+const weight = 
+Number(
+  localRng.getRandMax(129)
+ ) +
+ Number(
+  localRng.getRandMax(128)
+ );
+
+ const shinyMarkData = "";
+
+ return {
+  frame,
+  slot,
+  category: 
+  document.getElementById(
+    "categoryFilter"
+  ).value,
+  nature,
+  ability,
+
+  area:
+  document.getElementById(
+  "areaFilter"
+  ).value,
+
+  weather:
+  document.getElementById(
+  "weatherFilter"
+  ).value,
+
+ species,
+
+ level,
+  gender,
+  ec,
+ pid,
+ localSeed,
+ shiny,
+ shinyType,
+ shinyMark:
+  shinyType === 1
+   ? "◆"
+   : shinyType === 2
+   ? "★"
+   : "",
+ ivs,
+ height,
+weight,
+genderRoll,
+ability,
+localSeed,
+  mark
+ };
+
+}
