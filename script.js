@@ -1799,9 +1799,9 @@ document.getElementById(
   "weatherFilter"
  ) || "晴れ";
 
-weatherFilter.dispatchEvent(
- new Event("change")
-);
+//weatherFilter.dispatchEvent(
+ //new Event("change")
+//);
 
 document.getElementById(
  "speciesFilter"
@@ -1822,25 +1822,6 @@ if(currentPage){
  );
 
 }
-
- categoryFilter.dispatchEvent(
- new Event("change")
-);
-
-console.log(
- "category=",
- categoryFilter.value
-);
-
-console.log(
- "area disabled=",
- areaFilter.disabled
-);
-
-console.log(
- "weather disabled=",
- weatherFilter.disabled
-);
 
 }
 
@@ -2519,8 +2500,26 @@ document.getElementById(
  "weatherFilter"
 ).value;
 
+const version =
+document.querySelector(
+ 'input[name="version"]:checked'
+).value;
+
+const wildTable =
+category === "grass"
+? (
+ version === "Sword"
+ ? WILD_SW
+ : WILD_SH
+ )
+: (
+ version === "Sword"
+ ? WILD_SYMBOL_SW
+ : WILD_SYMBOL_SH
+ );
+
 const wildData =
-WILD_DATA.find(
+wildTable.find(
  x =>
  x.area === area &&
  x.weather === weather
@@ -3110,11 +3109,70 @@ document.getElementById(
  "areaFilter"
 );
 
-const areaSet =
-new Set();
+const categoryFilter =
+document.getElementById(
+ "categoryFilter"
+);
+
+const version =
+
+document.querySelector(
+
+ 'input[name="version"]:checked'
+
+).value;
+
+const wildTable =
+
+categoryFilter.value === "grass"
+
+? (
+
+ version === "Sword"
+
+ ? WILD_SW
+
+ : WILD_SH
+
+ )
+
+: (
+
+ version === "Sword"
+
+ ? WILD_SYMBOL_SW
+
+ : WILD_SYMBOL_SH
+
+ );
+
+ const oldArea =
+ areaFilter.value;
+
+const targetArea =
+ oldArea
+  .replace("(水上)", "")
+  .replace("(空中)", "")
+  .replace("(遠海)", "")
+  .replace("(海)","")
+  .replace("(水辺)", "")
+  .replace("(砂場)", "")
+  .replace("(崖と岩の間の砂地)", "")
+  .replace("(湖に隣接してる草むら)", "")
+  .replace("(湖を向いて左手方向に進んだ先の草むら)", "")
+  .replace("(巨人の帽子に近い草むら)", "")
+  .replace("(ストーンズ原野付近の砂地)", "")
+  .replace("(砂塵の窪地に隣接してる砂地)", "")
+  .replace("(枯れ草)", "")
+  .replace("(こもれび林に近い草むら)", "")
+  .replace("(中央付近の砂地)", "")
+  .replace("(ガラル鉱山に近い草むら)", "");
+
+ const areaSet =
+ new Set();
 
 for(
- const data of WILD_DATA
+ const data of wildTable
 ){
 
  areaSet.add(
@@ -3144,6 +3202,31 @@ for(
 
 }
 
+console.log("target", targetArea);
+
+for(const area of areaSet){
+ console.log("area", area);
+}
+
+if(
+ areaSet.has(
+  targetArea
+ )
+){
+
+ areaFilter.value =
+  targetArea;
+
+}
+else if(
+ areaFilter.options.length > 0
+){
+
+ areaFilter.selectedIndex =
+  0;
+
+}
+
 const weatherFilter =
 document.getElementById(
  "weatherFilter"
@@ -3155,11 +3238,29 @@ areaFilter.addEventListener(
 
   weatherFilter.innerHTML = "";
 
+const version =
+ document.querySelector(
+  'input[name="version"]:checked'
+ ).value;
+
+const wildTable =
+categoryFilter.value === "grass"
+? (
+ version === "Sword"
+ ? WILD_SW
+ : WILD_SH
+ )
+: (
+ version === "Sword"
+ ? WILD_SYMBOL_SW
+ : WILD_SYMBOL_SH
+ );
+
   const weatherSet =
   new Set();
 
   for(
-   const data of WILD_DATA
+   const data of wildTable
   ){
 
 if(
@@ -3225,8 +3326,26 @@ weatherFilter.addEventListener(
  "change",
  function(){
 
+const version =
+ document.querySelector(
+  'input[name="version"]:checked'
+ ).value;
+
+const wildTable =
+categoryFilter.value === "grass"
+? (
+ version === "Sword"
+ ? WILD_SW
+ : WILD_SH
+ )
+: (
+ version === "Sword"
+ ? WILD_SYMBOL_SW
+ : WILD_SYMBOL_SH
+ );
+
   const data =
-  WILD_DATA.find(
+  wildTable.find(
    x =>
    x.area === areaFilter.value &&
    x.weather === weatherFilter.value
@@ -3292,14 +3411,23 @@ if(savedSpecies){
 
 );
 
-const categoryFilter =
-document.getElementById(
- "categoryFilter"
-);
-
 categoryFilter.addEventListener(
  "change",
  function(){
+
+  console.log(
+
+  "category changed",
+
+  categoryFilter.value
+
+ );
+
+ areaFilter.disabled =
+
+ categoryFilter.value ===
+
+ "daily";
 
   areaFilter.disabled =
    categoryFilter.value ===
@@ -3308,7 +3436,112 @@ categoryFilter.addEventListener(
    speciesFilter.disabled =
    false;
 
+const oldArea =
+ areaFilter.value;
+
+   areaFilter.innerHTML = "";
+
+const version =
+ document.querySelector(
+  'input[name="version"]:checked'
+ ).value;
+
+const targetArea =
+ oldArea
+  .replace("(水上)", "")
+  .replace("(空中)", "")
+  .replace("(遠海)", "")
+  .replace("(海)","")
+  .replace("(川)", "")
+  .replace("(水辺)", "")
+  .replace("(砂場)", "")
+  .replace("(崖と岩の間の砂地)", "")
+  .replace("(湖に隣接してる草むら)", "")
+  .replace("(湖を向いて左手方向に進んだ先の草むら)", "")
+  .replace("(巨人の帽子に近い草むら)", "")
+  .replace("(ストーンズ原野付近の砂地)", "")
+  .replace("(砂塵の窪地に隣接している砂地)", "")
+  .replace("(枯れ草)", "")
+  .replace("(こもれび林に近い草むら)", "")
+  .replace("(中央付近の砂地)", "")
+  .replace("(橋の近くの草むら)", "")
+  .replace("(ガラル鉱山に近い草むら)", "");
+
+const areaSet =
+ new Set();
+
+const wildTable =
+ categoryFilter.value === "grass"
+ ? (
+    version === "Sword"
+    ? WILD_SW
+    : WILD_SH
+   )
+ : (
+    version === "Sword"
+    ? WILD_SYMBOL_SW
+    : WILD_SYMBOL_SH
+   );
+
+for(
+ const data of wildTable
+){
+
+ areaSet.add(
+  data.area
+ );
+
+}
+
+for(
+ const area of areaSet
+){
+
+ const option =
+  document.createElement(
+   "option"
+  );
+
+ option.value =
+  area;
+
+ option.textContent =
+  area;
+
+ areaFilter.appendChild(
+  option
+ );
+
+}
+
+if(
+ areaSet.has(
+  targetArea
+ )
+){
+
+ areaFilter.value =
+  targetArea;
+
+}
+else if(
+ areaFilter.options.length > 0
+){
+
+ areaFilter.selectedIndex =
+  0;
+
+}
+
+areaFilter.dispatchEvent(
+ new Event("change")
+);
+
  }
+);
+
+categoryFilter.dispatchEvent(
+new Event("change")
 );
 
 function getSlotSpecies(
@@ -3376,12 +3609,33 @@ document.getElementById(
  "weatherFilter"
 ).value;
 
+const version =
+ document.querySelector(
+  'input[name="version"]:checked'
+ ).value;
+
+const wildTable =
+categoryFilter.value === "grass"
+? (
+ version === "Sword"
+ ? WILD_SW
+ : WILD_SH
+ )
+: (
+ version === "Sword"
+ ? WILD_SYMBOL_SW
+ : WILD_SYMBOL_SH
+ );
+
 const wildData =
-WILD_DATA.find(
+wildTable.find(
  x =>
  x.area === area &&
  x.weather === weather
 );
+
+console.log(version);
+console.log(wildData);
 
 let species = "";
 
@@ -3552,8 +3806,6 @@ const localRng =
   9413281287807789659n
  );
 
-
-
 const ec =
  Number(
   localRng.getRand() &
@@ -3722,3 +3974,23 @@ localSeed,
  };
 
 }
+
+document
+ .querySelectorAll(
+  'input[name="version"]'
+ )
+ .forEach(radio => {
+
+  radio.addEventListener(
+   "change",
+   function(){
+
+    weatherFilter.dispatchEvent(
+     new Event("change")
+    );
+
+   }
+  );
+
+   });
+

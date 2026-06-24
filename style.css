@@ -446,3 +446,19 @@ summary,
     padding:12px;
     border-radius:10px;
 }
+
+.versionRow{
+ display: flex;
+ justify-content:center;
+ gap: 30px;
+
+ margin-top: 20px;
+}
+
+.versionRow label{
+ display: flex;
+ flex-direction: row;
+ align-items:center;
+ white-space: nowrap;
+ gap: 4px;
+}
